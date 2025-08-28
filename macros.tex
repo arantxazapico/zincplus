@@ -1,3 +1,7 @@
+\newcommand{\psiv}[1]{{\color{Emerald}#1--Psi.}}
+\newcommand{\Albert}[1]{{\color{purple}Albert: #1}}
+\newcommand{\Aru}[1]{{\color{blue}Aru: #1}}
+
 \newcommand{\gp}{\mathsf{gp}}
 \newcommand{\commit}{\mathsf{Commit}}
 \newcommand{\open}{\mathsf{Open}}
@@ -29,47 +33,24 @@
 
 \newcommand{\keywords}[1]{\bigskip\par\noindent{\textbf{Keywords\/}: #1}}
 
-\newcommand{\FormatAuthor}[3]{%
-\begin{tabular}{c}
-#1 \\ {\small\texttt{#2}} \\ {\small #3}
-\end{tabular}
-}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % THEOREMS
-\ifconf
-\else
 \theoremstyle{plain} % italics
-\fi
 \newtheorem{itheorem}{Theorem}%[section]
 \newtheorem{icorollary}{Corollary}%[section]
-\ifconf
-\else
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{claim}[theorem]{Claim}
-\fi
 \newtheorem{assumption}{Assumption}
 \newtheorem{construction}{Construction}
-\ifconf
-\else
 \theoremstyle{definition} % not italics
-\fi
 \newtheorem{idefinition}{Definition}%[section]
-\ifconf
-\else
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
-\fi
-
-\ifconf
-\else
 \theoremstyle{remark} %
 \newtheorem{case}{Case}
-\fi
-
 \crefname{assumption}{Assumption}{Assumptions}
 \crefname{step}{Step}{Steps}
 \crefname{figure}{Figure}{Figures}
@@ -156,7 +137,6 @@
 
 \newcommand{\field}{\mathbb{F}}
 \newc{\ff}{\mathbb{F}_{\pmodulus}}
-% \newcommand{\FF}[1]{\Field_{#1}}
 \newcommand{\Pairing}[2]{\PairingSymb(#1,\ #2)}
 \newcommand{\fixMSM}{\textrm{f-MSM}}
 \newcommand{\varMSM}{\textrm{v-MSM}}
@@ -169,14 +149,11 @@
 
 \newc{\randpick}{\ {\gets}{\scriptstyle\$}\ }
 
-% \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}%
 \newcommand{\Size}[1]{\abs{#1}}
 \newcommand{\Time}{t}
 
 \renewc{\secparam}{\lambda}
 \newc{\knowledgeerror}{\kappa}
-\newcommand{\poly}{\mathrm{poly}}
-\newcommand{\negl}{\mathrm{negl}}
 \newcommand{\Deg}{\mathrm{deg}}
 \newcommand{\VIEW}{\mathrm{View}}
 
@@ -192,7 +169,6 @@
 \newcommand{\SqPCSimulator}{\mathcal{S}_{\mathsf{m}}}
 \newcommand{\Real}{\mathsf{Real}}
 \newcommand{\Ideal}{\mathcal{I}}
-\newc{\extractor}{\mathcal{E}}
 \newc{\extractoradversary}{\mathcal{E}_{\adversary}}
 \newcommand{\Challenger}{\mathcal{C}}
 
@@ -203,7 +179,6 @@
 \newcommand{\SuccessOracles}{\mathsf{S}}
 
 % public parameters
-\newcommand{\pp}{\mathsf{pp}}
 \newcommand{\CRS}{\mathsf{crs}}
 \newcommand{\td}{\mathsf{td}}
 \newcommand{\PK}{\mathsf{PK}}
@@ -231,9 +206,6 @@
 \newcommand{\mhl}[1]{\text{\hl{$#1$}}}
 \newcommand{\iseq}{\overset{?}{=}}
 \newcommand{\isleq}{\overset{?}{\leq}}
-
-\newcommand{\pk}{\mathsf{pk}}
-\newcommand{\vk}{\mathsf{vk}}
 
 % Hash families
 \newcommand{\HashFamily}{\mathcal{H}}
@@ -270,7 +242,6 @@
 \newc{\fringinvertiblesubset}{\ring_{\modulus}^{\times}}
 \newc{\fringmultgroup}{\fring^{\times}}
 \newcommand{\automorphism}[1]{\emath{\sigma_{-1}(#1)}}
-% \newcommand{\norm}[1]{\emath{\left\| #1 \right\|}}
 \newcommand{\ltwonorm}[1]{\norm{#1}_{2}}
 \newcommand{\linfinitynorm}[1]{\norm{#1}_{\infty}}
 

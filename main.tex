@@ -1,32 +1,26 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FLAGS
-%
-\newif\ifnotes
-\newif\ifconf
-\newif\ifanonymize
-
-\notesfalse
-% \notestrue
-% \conftrue
-\conffalse
-\anonymizefalse
-
-\synctex=1
+\documentclass[11pt,letterpaper,usenames,dvipsnames]{article}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\documentclass[11pt]{article}
-
-
-\usepackage{xcolor,bbm,soul}
-\usepackage{adjustbox,mdframed}
+% PACKAGES
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{fullpage}
 \usepackage{multirow}
+\usepackage{bbm,soul}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{lipsum}
+\usepackage{makecell}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{adjustbox,mdframed}
 \usepackage[operators,sets,primitives,asymptotics,lambda,keys,ff]{cryptocode}
 \usepackage{enumitem}
-\usepackage{hyperref} % or \usepackage{url}
 \usepackage{geometry}
 \usepackage{booktabs}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage{mleftright}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{xspace}
 
 \usepackage{authblk}
 
@@ -35,10 +29,11 @@
 \usepackage{placeins} % in the preamble
 
 \usepackage{float}
+\usepackage{graphicx}
+\graphicspath{ {./figures/} }
 \usepackage[T1]{fontenc}
 \usepackage{titlesec}
 \usepackage{stmaryrd}
-\usepackage{xcolor}
 
 \usepackage[backend=biber,giveninits,style=alphabetic,maxalphanames=6,maxnames=6,backref]{biblatex}
 \addbibresource{references.bib} 
@@ -46,8 +41,8 @@
 \addbibresource{cryptobib/crypto.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\theetitle}{Zinc+}
-\usepackage[\ifnotes draft, notes=true \else notes=false \fi]{dtrt/dtrt}
+\newcommand{\plaintitle}{Zinc{+}}
+\newcommand{\stylizedtitle}{\textsf{Zinc{+}}}
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -55,34 +50,46 @@
     breaklinks=true,
     citecolor=Periwinkle,      
     urlcolor=Emerald,
-    pdftitle={\theetitle},
+    pdftitle={\plaintitle},
     pdfpagemode=FullScreen,
 }
 \DefineBibliographyStrings{english}{%
   backrefpage = {cited on p.},% originally "cited on page"
   backrefpages = {cited on pp.},% originally "cited on pages"
 }
-
-% hack because turning notes flag off doesn't seem to be working
-\ifnotes
-\newcommand{\psiv}[1]{\dtcolornote[Psi]{Emerald}{#1}}
-\newcommand{\arantxa}[1]{\dtcolornote[Arantxa]{Orchid}{#1}}
-\newcommand{\albert}[1]{\dtcolornote[Albert]{ForestGreen}{#1}}
-\else
-\newcommand{\psiv}[1]{}
-\newcommand{\arantxa}[1]{}
-\newcommand{\albert}[1]{}
-\fi
+% Remove starred sections from toc
+\DeclareRobustCommand{\SkipTocEntry}[5]{} 
+\usepackage[capitalize, nameinlink]{cleveref}
+\usepackage{tikz}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{macros}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\stylizedtitle}
+
+\newcommand{\FormatAuthor}[3]{%
+\begin{tabular}{c}
+#1 \\ {\small\texttt{#2}} \\ {\small #3}
+\end{tabular}
+}
+
+\author{
+	Albert Garreta, Psi Vesely, Arantxa Zapico
+}
+\date{\today}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{\theetitle}
 \begin{document}
 \maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\setcounter{tocdepth}{2}
+\begin{spacing}{0.8}
+{\footnotesize \tableofcontents}
+\end{spacing}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
