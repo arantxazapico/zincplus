@@ -38,7 +38,7 @@
 \usepackage[backend=biber,giveninits,style=alphabetic,maxalphanames=6,maxnames=6,backref]{biblatex}
 \addbibresource{references.bib} 
 \addbibresource{cryptobib/abbrev3.bib} 
-\addbibresource{cryptobib/crypto.bib}
+\addbibresource{cryptobib/crypto_crossref.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\plaintitle}{Zinc{+}}
@@ -102,6 +102,23 @@
 \subsection{Proximity gaps for infinite rings}
 \label{sec:proximity-gap}
 
+\newcommand{\blocklength}{\mathsf{n}}
+\newcommand{\distance}[2]{\Delta\left(#1,#2\right)}
+
+
+% We first recall the unique decoding version of the correlated agreement result for linear codes from~\cite{BKS18}.
+% \begin{lemma}[Correlated agreement over affine spaces~\cite{BKS18}]
+% \label{lemma:correlated-agreement}
+
+% Let $V \subseteq \field^\blocklength$ be a linear space over a finite field $\field$ with $\Delta(C) = \lambda$. Suppose $u^\ast \in \ring^b$ satisfies $\Delta(u^\ast,C) > \delta$, and fix arbitrary $u \in \ring^b$. Let $\challengeset \subseteq \ring$ be an exceptional set. For $\epsilon > 0$ satisfying $\delta - \epsilon < \lambda/3$. Let
+% \[
+% A = \{\alpha \in \mathcal{C} \mid \distance{u^\ast + \alpha u}{C} < \delta - \varepsilon\}
+% \]
+% If $|A| > 1/\varepsilon$ then there exist $v, v^\ast \in C$ such that
+% \[
+% \bigl|\set{i \in [n] \mid (u_i = v_i) \ \wedge \ (u^\ast_i = v^\ast_i)}\bigr| \geq (1 - \delta)\cdot n
+% \]
+% \end{lemma}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
