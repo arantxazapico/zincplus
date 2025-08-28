@@ -1,3 +1,20 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FLAGS
+%
+\newif\ifnotes
+\newif\ifconf
+\newif\ifanonymize
+
+\notesfalse
+% \notestrue
+% \conftrue
+\conffalse
+\anonymizefalse
+
+\synctex=1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[11pt]{article}
 
 
@@ -9,13 +26,6 @@
 \usepackage{enumitem}
 \usepackage{hyperref} % or \usepackage{url}
 \usepackage{geometry}
-\usepackage{hyperref} % or \usepackage{url}
-\hypersetup{
-	colorlinks=true,
-	linkcolor=black,
-	citecolor=blue,
-	urlcolor=blue
-}
 \usepackage{booktabs}
 
 \usepackage{authblk}
@@ -28,23 +38,72 @@
 \usepackage[T1]{fontenc}
 \usepackage{titlesec}
 \usepackage{stmaryrd}
-\usepackage[backend=bibtex,style= alphabetic,sorting=none]{biblatex}
+\usepackage{xcolor}
+
+\usepackage[backend=biber,giveninits,style=alphabetic,maxalphanames=6,maxnames=6,backref]{biblatex}
+\addbibresource{references.bib} 
+\addbibresource{cryptobib/abbrev3.bib} 
 \addbibresource{cryptobib/crypto.bib}
-\addbibresource{cryptobib/manual.bib}
-\addbibresource{cryptobib/abbrev3.bib}
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
 
-\title{Zinc+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\theetitle}{Zinc+}
+\usepackage[\ifnotes draft, notes=true \else notes=false \fi]{dtrt/dtrt}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=CadetBlue,
+    breaklinks=true,
+    citecolor=Periwinkle,      
+    urlcolor=Emerald,
+    pdftitle={\theetitle},
+    pdfpagemode=FullScreen,
+}
+\DefineBibliographyStrings{english}{%
+  backrefpage = {cited on p.},% originally "cited on page"
+  backrefpages = {cited on pp.},% originally "cited on pages"
+}
 
+% hack because turning notes flag off doesn't seem to be working
+\ifnotes
+\newcommand{\psiv}[1]{\dtcolornote[Psi]{Emerald}{#1}}
+\newcommand{\arantxa}[1]{\dtcolornote[Arantxa]{Orchid}{#1}}
+\newcommand{\albert}[1]{\dtcolornote[Albert]{ForestGreen}{#1}}
+\else
+\newcommand{\psiv}[1]{}
+\newcommand{\arantxa}[1]{}
+\newcommand{\albert}[1]{}
+\fi
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{macros}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\theetitle}
 \begin{document}
-
 \maketitle
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Zip+: A polynomial commitment scheme for $(\QQ[X])[\vec Y]$}
 \input{sections/zip+}
 	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Proximity gaps for infinite rings}
+\label{sec:proximity-gap}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand*{\bibfont}{\small}
+\printbibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

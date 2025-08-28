@@ -1,0 +1,6 @@
+[submodule "dtrt"]
+	path = dtrt
+	url = git@github.com:leisec/dtrt.git
+[submodule "cryptobib"]
+	path = cryptobib
+	url = git@github.com:cryptobib/export_crossref.git
