@@ -126,6 +126,7 @@
 \newc{\naturals}{\mathbb{N}}
 \newc{\cmplx}{\mathbb{C}}
 \newc{\reals}{\mathbb{R}}
+\newc{\rationals}{\mathbb{Q}}
 \newc{\integers}{\mathbb{Z}}
 \newc{\integersq}{\mathbb{Z}_{\modulus}}
 \newc{\integersp}{\mathbb{Z}_{\pmodulus}}
@@ -232,6 +233,7 @@
 
 % Algebras
 \newc{\ring}{\mathcal{R}}
+\newc{\ideal}{\mathfrak{n}}
 \newc{\ringdegree}{n}
 \newc{\modulus}{q}
 \newc{\pmodulus}{M}
@@ -244,6 +246,12 @@
 \newcommand{\automorphism}[1]{\emath{\sigma_{-1}(#1)}}
 \newcommand{\ltwonorm}[1]{\norm{#1}_{2}}
 \newcommand{\linfinitynorm}[1]{\norm{#1}_{\infty}}
+
+% Codes
+\renewc{\dist}{\mathsf{dist}}
+\renewc{\dim}{\mathsf{dim}}
+\newc{\blocklength}{\mathsf{n}}
+\newcommand{\reldist}[2]{\Delta\left(#1,#2\right)}
 
 % Footnotes
 \newcommand{\astfootnote}[1]{%
@@ -261,3 +269,6 @@
   \addtocounter{footnote}{-1}%
   \endgroup
 }
+
+% Better paragraphs headers
+\newcommand{\parhead}[1]{\medskip\noindent\textbf{#1}.\quad}
