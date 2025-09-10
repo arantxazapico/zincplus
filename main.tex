@@ -102,14 +102,14 @@
 \subsection{Proximity gaps for infinite rings}
 \label{sec:proximity-gap}
 
-\parhead{Informal proximity gap for proposed split encoding}
-Consider a projectable linear code $C$ over $\integers$ with a systematic generator matrix $G = [I_{\dim} \ G']$, and a good random choice of $q$. The honest prover will encode a message $m \in \integers^{\dim}$ as $m \| (G'm \bmod q) \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$.
+% \parhead{Informal proximity gap for proposed split encoding}
+% Consider a projectable linear code $C$ over $\integers$ with a systematic generator matrix $G = [I_{\dim} \ G']$, and a good random choice of $q$. The honest prover will encode a message $m \in \integers^{\dim}$ as $m \| (G'm \bmod q) \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$.
 
-Now consider an arbitrary set of vectors over $v_1,\dotsc,v_{m} \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$, and let $(u_1,\dotsc,u_m) \equiv (v_1,\dotsc,v_{m}) \bmod q$. We know from~\cite[Theorem 4.1]{BKS18} that if there exists $u^\ast \in \set{\sum_{i=1}^{m} \alpha_i u_i \mid \alpha_1,\dotsc,\alpha_m \in \integers_q}$ such that $\reldist{u^\ast}{C} > \delta$, then for any $\epsilon > 0$ such that $\delta-\epsilon < \lambda/3$ it holds that
-\[
-\Pr_{\alpha \gets \integers_{q}^m} \left[\reldist{\sum_{i=1}^{m} \alpha_i u_i}{C} < \delta - \epsilon\right] < \frac{1}{\epsilon q}
-\]
-Since for any $\alpha$ we have $\reldist{\sum_{i=1}^{m} \alpha_i v_i}{C} \leq \reldist{\sum_{i=1}^{m} \alpha_i u_i}{C}$, this above result also holds for with respect to the $v_i$.
+% Now consider an arbitrary set of vectors over $v_1,\dotsc,v_{m} \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$, and let $(u_1,\dotsc,u_m) \equiv (v_1,\dotsc,v_{m}) \bmod q$. We know from~\cite[Theorem 4.1]{BKS18} that if there exists $u^\ast \in \set{\sum_{i=1}^{m} \alpha_i u_i \mid \alpha_1,\dotsc,\alpha_m \in \integers_q}$ such that $\reldist{u^\ast}{C} > \delta$, then for any $\epsilon > 0$ such that $\delta-\epsilon < \lambda/3$ it holds that
+% \[
+% \Pr_{\alpha \gets \integers_{q}^m} \left[\reldist{\sum_{i=1}^{m} \alpha_i u_i}{C} < \delta - \epsilon\right] < \frac{1}{\epsilon q}
+% \]
+% Since for any $\alpha$ we have $\reldist{\sum_{i=1}^{m} \alpha_i v_i}{C} \leq \reldist{\sum_{i=1}^{m} \alpha_i u_i}{C}$, this above result also holds for with respect to the $v_i$.
 
 % We first recall the unique decoding version of the correlated agreement result for linear codes from~\cite{BKS18}.
 % \begin{lemma}[Correlated agreement over affine spaces~\cite{BKS18}]
