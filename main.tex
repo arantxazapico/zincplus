@@ -85,6 +85,8 @@
 }
 \date{\today}
 
+\newcommand{\albert}[1]{\textcolor{teal}{Albert: {#1}}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \maketitle
@@ -101,6 +103,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Preliminaries}
 
+\newcommand{\cR}{\mathcal{R}}
+
+
+        
 
 \subsection{Rings and rings of polynomials} Throughout the paper we extensively work with multivariate polynomials whose coefficients are polynomials themselves. Formally, given a ring $\cR$ and variables $\YY=(Y_1,\ldots, Y_\mu)$, we let $\cR[\YY]$ denote the ring of multivariate polynomials on variables $\YY$, with coefficients inn $\cR$. For us, typically $\cR$ will be of the form $\ZZ[X]$ or $\QQ[X]$ (or even $\local{q}[X]$ for some prime $q$). In that case, $\cR[\YY]$ contains all polynomials on variables $\YY$ whose coefficients are polynomials from $\ZZ[X]$ (or $\QQ[X]$, or $\local{q}[X]$). 
 
@@ -119,23 +125,41 @@ For every ring $\cR$ we work with we fix a publicly known representation of its 
 
 In this section we define the type of constraints we are interested in working on. As we argued in \cref{?}, and as we see later in \cref{?}, these constraints are highly expressive, and can  express essentially all computations of interest with almost no arithmetization overhead.
 
+\newcommand{\evalconstraints}{\text{\emph{Eval}}}
+\newcommand{\mainQpolyring}{(\QQ[X]_{\leq B})}
 
-Let $\cQ$ be a set of polynomials with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree). Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size parameters. An algebraic relation for $(\gp,\cQ)$ is a set $\REL_{\gp, \cQ}$ of triples $(\idx, \inp;\wit)$ with the following properties:
+Let $\cQ$ be a set of polynomials with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree). Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size parameters. Let $\evalconstraints$ be a set of triples $(i, j, a)$ where $i,j\in [k]$ and $a \in \QQ$. An algebraic relation for $(\gp,\cQ, \evalconstraints)$ is a set $\REL_{\gp, \cQ, \evalconstraints}$ of triples $(\idx, \inp;\wit)$ with the following properties:
 \begin{itemize}
-	\item The \emph{index} $\idx$ contains $n$ oracles $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials $(\QQ[X])_{\leq B}^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables.
+	\item The \emph{index} $\idx$ contains $n$ oracles $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables.
 	 \item $\cQ$ is a set of polynomials with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
-	\item $\wit$ is a vector consisting of $k$ multilinear polynomials $f_1(X;\YY),\ldots, f_k(X;\YY)$ from $(\QQ[X])_{\leq B}^{\multilin}[\YY]$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
-	\item $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))}$, where $\zz\in (\QQ[X])_{\leq B}^m$.
-	\item Each of the polynomials in $\cQ$ vanishes (as a polynomial in $\QQ[X]$) when evaluated on the values $$((g_1(X;\yy),\ldots, g_n(X;\yy), f_1(\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}, \yy(X)).$$ 
+	\item $\wit$ is a vector consisting of $k$ multilinear polynomials $f_1(X;\YY),\ldots, f_k(X;\YY)$ from $\mainQpolyring^{\multilin}[\YY]$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
+	\item $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
+	\item Each of the polynomials in $\cQ$ vanishes (as a polynomial in $\QQ[X]$) when evaluated on the values $$((g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}, \yy(X)).$$ 
+    \item \albert{New thing wrt Zinc!} For each $(i,j,a)\in \evalconstraints$ we have
+    %
+    $$
+    f_i(a; \yy) = f_j(a;\yy) \quad \text{for all } \yy\in \{0,1\}^\mu.
+    $$
+    \albert{Should we allow for X-evaluations of elements in the public instance?}
 	\end{itemize}
 
-\begin{equation*}
-\begin{aligned}
-	
-\end{aligned}	
-\end{equation*}
+    Formally, $\REL_{\gparams,\cQ,\evalconstraints}$ has the following form:
+    %
+    \begin{equation*}
+    \begin{aligned}
+    \REL_{\gparams,\cQ,\evalconstraints} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
+    & \gparams=(k,m,n,\mu, B),  \\
+    & \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \\
+    & \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}) \text{ for some } \yy\in \mainQpolyring^{m},\\    
+        &\wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\R_B^{^{\multilin}}[\XX]\right)^{n},    \ \XX=(X_1,\ldots, X_\mu),\\
+        &(g_1(\XX),\dots,g_n(\XX))\in \left(\R_B^{^{\multilin}}[\XX]\right)^{n},\\
+        &Q((g_1(\xx),\ldots, g_n(\xx), f_1(\xx),\ldots, f_k(\xx))_{\xx\in \BB^\mu}, \yy) =0  \text{ for all } Q\in \cQ
+    \end{aligned} \right.\right\}
+    \end{aligned}
+    \end{equation*}
 
     \subsection{PIOP over a ring, projections, and lifts}
+\albert{Section copied from Zinc for editing convenience. Will delete later.}
 
     We start by outlining our setting and presenting some tools we will work with. Mainly, we define what we mean by a relation to be algebraic over a ring $\R$, and we establish correspondences between PIOPs for a relation over a ring $\R$, and a PIOP for an homomorphic image $\R'$ of $\R$. A reader wishing to tone down the abstractness of the presentation can replace $\R$ by the local ring $\local{q}$ (or even $\ZZ$, even though we will never instantiate the schemes in this section on $\ZZ$), and $\R'$ by $\FF_q$, for $q$ a prime.
 
