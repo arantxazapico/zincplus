@@ -176,7 +176,7 @@ In this section we define the type of constraints we are interested in working o
 
 Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size parameters whose meaning will become apparent soon. 
 
-Let $I_1,\ldots, I_t$ be a collection of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
+Let $I_1,\ldots, I_t$ be a tuple of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
 Denote 
 %
 $$
@@ -218,14 +218,17 @@ Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
     \begin{equation*}
     \begin{aligned}
     \REL_{\gparams,\megaQ,\cS} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
-    & \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \ \YY=(Y_1,\ldots, Y_\mu), \\
-            &(g_1(X;\YY),\dots,g_n(X;\YY))\in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
-    & \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}),\\ &\yy(X)\in \mainQpolyring^{m},\\    
-        &\wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{k},\\
-        &Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
-        &\vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
+    &\textbf{Index-instance-witness}\\
+    &\quad \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \ \YY=(Y_1,\ldots, Y_\mu), \\
+            &\quad(g_1(X;\YY),\dots,g_n(X;\YY))\in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
+    &\quad \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}),\\ &\quad \yy(X)\in \mainQpolyring^{m},\\    
+        &\quad \wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{k},\\
+        &\textbf{Algebraic constraints mod ideal}\\
+        &\quad Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
+        &\quad \vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
      \end{aligned}\right),\\
-        & f_i(X,\yy)\in S_i \text{ for all } i\in [k], \yy\in \{0,1\}^\mu
+     &\textbf{Membership constraints}\\
+        &\quad f_i(X,\yy)\in S_i \text{ for all } i\in [k], \yy\in \{0,1\}^\mu
         %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
     \end{aligned} \right.\right\}
     \end{aligned}
@@ -242,7 +245,7 @@ Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
     
 \subsection{Examples}\label{s: example_sha}
 
-\subsubsection{Mixing the XOR operation and arithmetic modulo $2^n$}
+\subsubsection{Mixing the bitwise XOR operation and arithmetic modulo $2^n$}
 
 \newcommand{\and}{\ \mathsf{AND}\ }
 \newcommand{\xor}{\ \mathsf{XOR}\ }
@@ -252,99 +255,119 @@ As a simple example, consider the function
 %
 \begin{align*}
 f: [0, 2^{32}-1] &\to [0, 2^{32}-1]\\
-w &\mapsto (w\cdot w \mod 2^{32}) \xor w
+u &\mapsto (u\cdot u \mod 2^{32}) \xor u
 \end{align*}
 %
-where the operation $w\cdot w \mod 2^{32}$ here means squaring $w$ and taking as a result $w'$ the reduction of $w^2$ modulo $2^{32}$ in the range $[0,2^{32}-1]$. Then,  $w'\xor w$ means performing the bitwise XOR operation between $w'$ and $w$ when $w'$ and $w$ are represented as strings of $32$ bits. After the bitwise operation is performed, the resulting string of $32$ bits $w''$ is reinterpreted as an integer in the range $[0, 2^{32}-1]$. 
+where the operation $u\cdot u \mod 2^{32}$ here means squaring $u$ and taking as a result $u'$ the reduction of $u^2$ modulo $2^{32}$ in the range $[0,2^{32}-1]$. Then,  $u'\xor u$ means performing the bitwise XOR operation between $u'$ and $u$ when $u'$ and $u$ are represented as strings of $32$ bits. After the bitwise operation is performed, the resulting string of $32$ bits $u''$ is reinterpreted as an integer in the range $[0, 2^{32}-1]$. 
 
-Say that a prover wants to show that it knows the result of computing $f^{2^{20}}(w_0)$ for some public integer $w\in [0, 2^{32}-1]$. Here $f^{i}(w_0)$ denotes the result of consecutively applying $f$ for $i$ times, starting with the input $w_0$. 
+Say that a prover wants to show that it knows the result of computing $f^{2^{20}-1}(u_1)$ for some public integer $u\in [0, 2^{32}-1]$. Here $f^{i}(u_1)$ denotes the result of consecutively applying $f$ for $i$ times, starting with the input $u_1$. 
 
 
-We proceed to describe an algebraic  constraint over $\QQ[X]$ modulo prime ideals, $\REL_{\gp, \megaQ}$, encoding the computation $f^{2^{20}-1}(w_0)$.
+We proceed to describe an algebraic  constraint over $\QQ[X]$ modulo prime ideals, $\REL_{\gp, \megaQ}$, encoding the computation $f^{2^{20}-1}(w_1)$.
 
 We begin by introducing the following notation: Denote the set of all polynomials of degree strictly less than $32$ with binary coefficients as $\{0,1\}^{< 32}[X]$. Consider the following bijection:
 %
 \begin{align*}
 \phi: [0,2^{32}-1] &\to \{0,1\}^{< 32}[X]\\
-u= \sum_{i=1}^{32} u_i\cdot 2^{i-1} &\mapsto \sum_{i=1}^{32} u_i \cdot X^{i-1},
+v= \sum_{i=1}^{32} v_i\cdot 2^{i-1} &\mapsto \sum_{i=1}^{32} v_i \cdot X^{i-1},
 \end{align*}
 %
-above, the elements $u_i$ all belong to $\{0,1\}$ and $u= \sum_{i=1}^{32} u_i\cdot 2^{i-1}$ corresponds to the base-2 representation of $u$.  Now, define the following elements recursively for all $i\geq 0$:
+above, the elements $v_i$ all belong to $\{0,1\}$ and $v= \sum_{i=1}^{32} v_i\cdot 2^{i-1}$ corresponds to the base-2 representation of $v$.  Now, define the following elements and vectors  for all $i\in [ 2^{20}-1]$. We omit referring to $X$ even though many of these elements and vectors depend on $X$:
 \begin{align*}
-    w_i' &= (w_i \cdot w_i \mod 2^{32}) \in  [0, 2^{32}-1],\\
-    \hat{w_{i+1}} &= \left(\phi(w_i') \xor \phi(w_i)\right) \in \{0,1\}^{\leq 31}[X]\\
-        w_{i+1} &= f(w_i) = \phi^{-1}(\hat{w_{i+1}}) \in [0, 2^{32}-1],\\ 
-     \ww&=(0, w_1,\ldots, w_{2^{20}-1}) \in [0,2^{32}-1]^{2^{20}},\\
-     \ww' &= (w_0',\ldots, w_{2^{20}-1}')\in [0,2^{32}-1]^{2^{20}},\\
-          \phi(\ww) &= (\phi(w_0),\ldots, \phi(w_{2^{20}-1}))\in (\{0,1\}^{< 32}[X])^{2^{20}},\\
-     \phi(\ww') &= (\phi(w_0'),\ldots, \phi(w_{2^{20}-1}'))\in (\{0,1\}^{< 32}[X])^{2^{20}},\\
-     \hat{\ww} &= (0,\hat{w_1}, \ldots, \hat{w_{2^{20}-1}}))\in (\{0,1\}^{< 32}[X])^{2^{20}}
+    u_i' &= (u_i \cdot u_i \mod 2^{32}) &&\in  [0, 2^{32}-1],\\
+    u_{i+1} &=  f(u_i)=\phi^{-1}\left(\phi(u_i') \xor \phi(u_i)\right) &&\in \{0,1\}^{\leq 31}[X],\\
+       % w_{i+1} &= f(w_i) = \phi^{-1}(\hat{w_{i+1}}) &&\in [0, 2^{32}-1],\\ 
+     \uu&=(u_1,\ldots, u_{2^{20}}) &&\in [0,2^{32}-1]^{2^{20}},\\
+     \uu' &= (u_1',\ldots, u_{2^{20}-1}', 0) &&\in [0,2^{32}-1]^{2^{20}},\\
+          \phi(\uu) &= (\phi(u_1),\ldots, \phi(u_{2^{20}-1}), 0)&& \in (\{0,1\}^{< 32}[X])^{2^{20}},\\
+     \phi(\uu') &= (\phi(u_1'),\ldots, \phi(u_{2^{20}-1}'),0) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}.%\\
+     %\hat{\ww} &= (0,\hat{w_2}, \ldots, \hat{w_{2^{20}}}) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}
 \end{align*}
-We introduce $4$ multilinear polynomials on $20$ variables $\YY=(Y_1,\ldots, Y_{20})$, with coefficients in $\QQ[X]$. We denote them by $f(X; \YY), f'(X;\YY), g(X;\YY), g'(X;\YY)$. These polynomials will be the witness of the index-instance-witness triple we will build. Intuitively, $f(X; \YY), f'(X;\YY), g(X;\YY), g'(X;\YY)$ are supposed to be the multilinear extensions of the vectors $\ww, \ww', \phi(\ww)$, and $\phi(\ww')$, respectively. 
+The $0$'s at the end of $\uu', \phi(\uu), \phi(\uu')$ can be chosen arbitrarily: our computation never accesses these entries of the vectors, and so these entries are not be subject to any constraint whatsoever.
+
+
+We introduce $4$ multilinear polynomials on $20$ variables $\YY=(Y_1,\ldots, Y_{20})$, with coefficients in $\QQ[X]$. We denote them by $f_{\uu}(X; \YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY), f_{\phi(\uu')}(X;\YY)$. These polynomials will be the witness of the index-instance-witness triple we will build. Intuitively, $f_{\uu}(X; \YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY), f_{\phi(\uu')}(X;\YY)$ are supposed to be the multilinear extensions of the vectors $\uu, \uu', \phi(\uu)$, and $\phi(\uu')$, respectively. 
 
 We start by imposing the following membership constraints: For all $\yy\in \{0,1\}^{20}$,
 %
 \begin{equation}\label{e: example_membership_constraints}
-f_1(X;\yy), f_1'(X;\yy) \in [0,2^{32}-1], \quad f_2(X;\yy), f_2'(X;\yy) \in \{0,1\}^{<32}[X].
+f_{\uu}(X;\yy), f_{\uu'}(X;\yy) \in [0,2^{32}-1], \quad f_{\phi(\uu)}(X;\yy), f_{\phi(\uu')}(X;\yy) \in \{0,1\}^{<32}[X].
 \end{equation}
 %
-For ease of notation, in what follows we represent elements from $\{0,1\}^{20}$ as integers in the range $[0, 2^{20}-1]$. 
+For ease of notation, in what follows we represent elements from $\{0,1\}^{20}$ as integers in the range $[2^{20}]$. 
 
-Assuming the membership constraints \cref{e: example_membership_constraints} hold, we have that $f_1'(X; i)= f_1(X;i)\cdot f_1(X;i) \mod 2^{32}$ if and only if 
+Assuming the membership constraints \eqref{e: example_membership_constraints} hold, we have that  
 %
 $$
-f_1'(X; i)= (f_1(X;i)\cdot f_1(X;i) \mod 2^{32}) \quad \Leftrightarrow  \quad f_1'(X; i)= f_1(X;i)\cdot f_1(X;i) + 2^{32} \mu_i(X)
+f_{\uu'}(X; i)= (f_{\uu}(X;i)\cdot f_{\uu}(X;i) \mod 2^{32}) \quad \Leftrightarrow  \quad f_{\uu'}(X; i)= f_{\uu}(X;i)\cdot f_{\uu}(X;i) + 2^{32} \mu_i(X)
 $$
-for some $\mu_i(X)\in \ZZ[X]$, for all $i=0,\ldots, 2^{20}-1$. Above, the operations and equality on the right-hand side  are all happening in the ring $\QQ[X]$.  Similarly, for all $i\in [1, 2^{20}]$ \albert{inconsistency of subindices?},
+(the symbol $\Leftrightarrow$ should be read as ``if and only if'')
+for some $\mu_i(X)\in \ZZ[X]$, for all $i \in [2^{20}-1]$. Above, the operations and equality on the right-hand side  are all happening in the ring $\QQ[X]$.  Similarly, for all $i\in [2^{20}-1]$,
 %
-$$
-f_2(X; i+1)= f_2'(X;i)\xor f_2(X;i) \quad \Leftrightarrow \quad  f_2(X; i+1) - (f_2'(X;i) + f_2(X;i)) + 2\cdot \eta_i(X) \in I_{GF}
-$$
+\begin{align*}
+&f_{\phi(\uu)}(X; i+1)= f_{\phi(\uu')}(X;i)\xor f_{\phi(\uu)}(X;i)\\ &\quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \Leftrightarrow \quad  f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X) \in I_{GF}
+\end{align*}
 for some $\eta_i \in \ZZ[X]$,  where $I_{GF}$ is a fixed ideal generated by  a polynomial of degree $32$ which is irreducible both in $\FF[X]$ and in $\FF_2[X]$ \albert{needs more detail, maybe in a separate section}.
 
-Further, as before assuming that \eqref{e: example_membership_constraints}, we have that for all $i\in [0, 2^{20}-1]$  \albert{turn into its own lemma}
+Further, as before assuming that \eqref{e: example_membership_constraints} holds, we have that for all $i\in [2^{20}-1]$  \albert{turn into its own lemma}
 %
 $$
-f_2(X; i) = \phi(f_1(X; i)) \quad \Leftrightarrow\quad f_2(X;i)-f_1(X;i) \in (X-2) 
+f_{\phi(\uu)}(X; i) = \phi(f_{\uu}(X; i)) \quad \Leftrightarrow\quad f_{\phi(\uu)}(X;i)-f_{\uu}(X;i) \in (X-2) 
 $$
 where $(X-2)$ denotes the ideal of $\QQ[X]$ generated by the polynomial $X-2$. And similarly,
 $$
-f_2'(X; i) = \phi(_1'(X; i)) \quad \Leftrightarrow\quad f_2'(X;i)-f_1'(X;i) \in (X-2). 
+f_{\phi(\uu')}(X; i) = \phi(_1'(X; i)) \quad \Leftrightarrow\quad f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i) \in (X-2). 
 $$
 %
 % 
-We now have all we need to put together a relation of the form $\REL_{\gp, \megaQ, \cS}$ which encodes the computation $f^{2^{20}-1}(w_0)$.
+We now have all we need to put together a relation of the form $\REL_{\gp, \megaQ, \cS}$ which encodes the computation $f^{2^{20}-1}(u_0)$.
 
-We set $\gp=(k=6,m=1,n=0,\mu=20, B)$ \albert{what $B$?}. The $k=6$ witness polynomials are $$\wit=(f_1(X;\YY), f_1'(X;\YY), f_2(X;\YY),  f_2'(X;\YY), \mu(X;\YY), \eta(X;\YY)),$$ where $\mu(X;\YY), \eta(X;\YY)$ satisfy $\mu(X;i)=\mu_i(X)$ and $\eta(X;i)=\eta_i(X)$ for each $i\in \{0,1\}^{20}$. Then we set $\cS=(S_1, \ldots, S_6)$ with
+We set $\gp=(k=6,m=1,n=0,\mu=20, B)$ \albert{what $B$?}. The $k=6$ witness polynomials are $$\wit=(f_{\uu}(X;\YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY),  f_{\phi(\uu')}(X;\YY), \mu(X;\YY), \eta(X;\YY)),$$ where $\mu(X;\YY), \eta(X;\YY)$ satisfy $\mu(X;i)=\mu_i(X)$ and $\eta(X;i)=\eta_i(X)$ for each $i\in \{0,1\}^{20}$. Then we set $\cS=(S_1, \ldots, S_6)$ with
 %
 $$S_1 = S_2 = [0,2^{32}-1],\ S_3=S_4= \{0,1\}^{< 32}[X],\ S_5=S_6=\mainQpolyringmultilin.$$
 %
 Effectively, these choice of sets places the membership constraints from \cref{e: example_membership_constraints}. The selection $S_5, S_6$ is done so that there is effectively no membership constraint placed on the elements  $\mu(X;i)$ and $\eta(X;i)$, other than the already ``native'' membership constraint to the set of polynomials from $\QQ[X]$ representable with at most $B$ bits.
 
-We further have $\idx = \emptyset$ since we chose $n=0$. Now, we have $\yy(X) \in \mainQpolyring^m$ must consist of a single polynomial because we chose $m=1$. We let $\yy(X) = (w_0)$, i.e.\ $\yy(X)$ contains simply the initial public integer $w_0$ that our computation begins with. Then we have $$\inp = (\yy(X)=(w_0), \oracle{f_1(X;\YY)}, \oracle{f_2(X;\YY)}, \oracle{f_1'(X;\YY)}, \oracle{f_2'(X;\YY)}, \oracle{\mu(X;\YY)}, \oracle{\eta(X;\YY)}).$$
+We further have $\idx = \emptyset$ since we chose $n=0$. Now, we have $\yy(X) \in \mainQpolyring^m$ must consist of a single polynomial because we chose $m=1$. We let $\yy(X) = (w_0)$, i.e.\ $\yy(X)$ contains simply the initial public integer $w_0$ that our computation begins with. Then we have $$\inp = \left(\begin{aligned}&\yy(X)=(w_0),\\ &\oracle{f_{\uu}(X;\YY)}, \oracle{f_{\phi(\uu)}(X;\YY)}, \oracle{f_{\uu'}(X;\YY)}, \oracle{f_{\phi(\uu')}(X;\YY)}, \oracle{\mu(X;\YY)}, \oracle{\eta(X;\YY)}\end{aligned}\right).$$
 %
-Finally, we select the tuple $\megaQ$ as follows. We let $\megaQ=\{(\cQ_1, I_1), (\cQ_2, I_2), (\cQ_3, I_3)\}$,
-where
+Denote
+%
+$$
+\vv_{\inp,\wit}(X)=(w_1, f_{\uu}(X;\yy), f_{\uu'}(X;\yy), f_{\phi(\uu)}(X;\yy), f_{\phi(\uu')}(X;\yy), \mu(X;\yy), \eta(X;\yy))_{\yy\in \{0,1\}^{20}}.
+$$
+Finally, we select the tuple $\megaQ$ as follows. We let $\megaQ=\{(\cQ_1, I_1), (\cQ_2, I_2), (\cQ_3, I_3), (\cQ_4, I_5)\}$,
+where for all $i\in [2^{20}-1]$ (recall we identify $\{0,1\}^{20}$ and $[2^{20}]$)
 %
 \begin{align*}
-    &I_1 = \{0\}, &&\cQ_1\\
-    &I_2 = I_{GF}, &&\cQ_2\\
-    &I_3 = (X-2), && \cQ_3
+    &I_1 = \{0\}, &&\cQ_1=(Q_{1i})_{i\in [2^{20}]},\\
+    &I_2 = I_{GF}, &&\cQ_2=(Q_{2i})_{i\in [2^{20}-1]},\\
+    &I_3 =(X-2), &&\cQ_3=(Q_{3i})_{i\in [2^{20}-1]},\\
+      &I_4 =(X-2), &&\cQ_4=(Q_{4i})_{i\in [2^{20}]},
 \end{align*}
+with
+\begin{align*}
+    Q_{1i}(\vv_{\inp,\wit}(X))&=f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X)\\
+    Q_{2i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X),\\
+    Q_{3i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X;i)-f_{\uu}(X;i),\\
+    Q_{4i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i)
+\end{align*}
+We also want to make sure that $f_{\uu}(X; 1)= w_1$.
 
+Putting everything together, we obtain the following relation for the computation $f^{2^{20}-1}(w_0)$:
    \begin{equation*}
     \begin{aligned}
     &\REL_{\gparams,\megaQ,\cS} =\\ &\left\{ \left(\begin{aligned}&\idx,\\ &\inp;\\ &\wit\end{aligned}\right) \left| \ \begin{aligned}
-    & \idx = \emptyset, \ \YY=(Y_1,\ldots, Y_{20}), \inp =(w_0),\\    
-        &\wit = \left(\begin{split}&f_1(X;\YY), f_1'(X;\YY),\\ &f_2(X;\YY),  f_2'(X;\YY),\\ &\mu(X;\YY), \eta(X;\YY)\end{split}\right) \in \left(\mainQpolyringmultilin[\YY]\right)^{6},\\
+        &\textbf{Index-instance-witness}\\
+    &\quad \idx = \emptyset, \ \YY=(Y_1,\ldots, Y_{20}), \inp =(w_0),\\    
+        &\quad  \wit = \left(\begin{split}&f_{\uu}(X;\YY), f_{\uu'}(X;\YY),\\ &f_{\phi(\uu)}(X;\YY),  f_{\phi(\uu')}(X;\YY),\\ &\mu(X;\YY), \eta(X;\YY)\end{split}\right) \in \left(\mainQpolyringmultilin[\YY]\right)^{6},\\
         &\textbf{Algebraic constraints mod ideal}\\
-        &\quad f_1'(X; i) - f_1(X;i)\cdot f_1(X;i) - 2^{32} \mu_i(X) = 0 \text{ for all } i\in \{0,1\}^{20},\\
-        &\quad f_2(X; i+1) - (f_2'(X;i) + f_2(X;i)) + 2\cdot \eta_i(X) \in I_{GF} \text{ for all } i\in \{0,1\}^{20},\\
-        &\quad f_2(X;i)-f_1(X;i) \in (X-2)\text{ for all } i\in \{0,1\}^{20},\\
-        &\quad f_2'(X;i)-f_1'(X;i) \in (X-2)\text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X) = 0 \text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X) \in I_{GF} \text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_{\phi(\uu)}(X;i)-f_{\uu}(X;i) \in (X-2)\text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i) \in (X-2)\text{ for all } i\in \{0,1\}^{20},\\
         &\textbf{Membership constraints}\\
-        &\quad  f_1(X;i), f_1'(X;i) \in [0,2^{32}-1], \text{ for all } i \in \{0,1\}^{20},\\ 
-        &\quad f_2(X;i), f_2'(X;i) \in \{0,1\}^{<32}[X],  \text{ for all } i \in \{0,1\}^{20}
+        &\quad  f_{\uu}(X;i), f_{\uu'}(X;i) \in [0,2^{32}-1], \text{ for all } i \in \{0,1\}^{20},\\ 
+        &\quad f_{\phi(\uu)}(X;i), f_{\phi(\uu')}(X;i) \in \{0,1\}^{<32}[X],  \text{ for all } i \in \{0,1\}^{20}
         %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
     \end{aligned} \right.\right\}
     \end{aligned}
