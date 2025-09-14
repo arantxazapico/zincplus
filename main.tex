@@ -171,27 +171,35 @@ In this section we define the type of constraints we are interested in working o
 %
 
 \newcommand{\megaQ}{\mathfrak{Q}}
+\renewcommand{\ff}{\mathbf{f}}
+\newcommand{\cS}{\mathcal{S}}
 
-Let $I_1,\ldots, I_t$ be a collection of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of \empg{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
+Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size parameters whose meaning will become apparent soon. 
+
+Let $I_1,\ldots, I_t$ be a collection of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
 Denote 
 %
 $$
-\megaQ = \{(\cQ_1, I_1), \ldots, \cQ_t, I_t\}.
+\megaQ = \{(\cQ_1, I_1), \ldots, (\cQ_t, I_t)\}.
 $$
+%
+Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
 %Let $\evalconstraints$ be a set of triples $(i, j, a)$ where $i,j\in [k]$ and $a \in \QQ$. 
 %
-Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size parameters.  An algebraic relation for $(\gp,\megaQ)$ is a set $\REL_{\gp, \cQ}$ of triples $(\idx, \inp;\wit)$ with the following properties:
+ 
+ An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \cQ,\cS}$ of triples $(\idx, \inp;\wit)$ with the following properties:
 \begin{itemize}
-	\item The \emph{index} $\idx$ contains $n$ oracles $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables.
-	 \item For each $i\in [t]$, $\cQ_t$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
+	\item \textbf{Index.} The \emph{index} $\idx$ contains $n$ oracles \albert{maybe $n$ should be the size of the witness, it's more standard} $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables.
+	 \item \textbf{Constraint polynomials.} For each $i\in [t]$, $\cQ_t$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
      with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
-	\item The witness $\wit$ is a vector consisting of $k$ multilinear polynomials $f_1(X;\YY),\ldots, f_k(X;\YY)$ from $\mainQpolyring^{\multilin}[\YY]$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
-	\item The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
-	\item For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
+	\item \textbf{Witness} The \emph{witness} $\wit$ is consists of $k$ multilinear polynomials $f_{1}(X;\YY),\ldots, f_{k}(X;\YY))$ from $\mainQpolyring^{\multilin}[\YY]$. %We denote these vectors by $\ff_1(X;\YY), \ldots, \ff_r(X;\YY)$ and their entries as $\ff_{i}(X;\YY)=(f_{i1}(X;\YY),\ldots, f_{ik}(X;\YY))$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
+	\item \textbf{Public instance.} The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
+	\item \textbf{Algebraic constraints modulo prime idelas.} For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
     i.e.
     $$
     Q(\vv_{\idx, \inp,\wit}(X)) \in I_t.
     $$
+    \item \textbf{Membership constraints.} For each $i\in [k]$ be have that $f_i(X;\yy) \in S_i$ for all $\yy\in \{0,1\}^\mu$.
     %\item For each  polynomial $Q \in \cQ$, we have that $Q$ vanishes  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
     %i.e.
     %$$
@@ -205,11 +213,11 @@ Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size par
     %\albert{Should we allow for X-evaluations of elements in the public instance?}
 	\end{itemize}
 %
-    Formally, $\REL_{\gparams,\megaQ}$ has the following form:
+    Formally, $\REL_{\gparams,\megaQ, \cS}$ has the following form:
     %
     \begin{equation*}
     \begin{aligned}
-    \REL_{\gparams,\megaQ} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
+    \REL_{\gparams,\megaQ,\cS} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
     & \gparams=(k,m,n,\mu, B),  \\
     & \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \ \YY=(Y_1,\ldots, Y_\mu), \\
             &(g_1(X;\YY),\dots,g_n(X;\YY))\in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
@@ -217,12 +225,18 @@ Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size par
         &\wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
         &Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
         &\vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
-     \end{aligned}\right)%,\\
+     \end{aligned}\right),\\
+        & f_i(X,\yy)\in S_i \text{ for all } i\in [k], \yy\in \{0,1\}^\mu
         %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
     \end{aligned} \right.\right\}
     \end{aligned}
     \end{equation*}
 
+    \begin{remark}[The membership constraints are algebraic constraints]
+    The membership constraints, namely $f_i(X,\yy) \in S_i$ for all $i\in [k]$, $\yy\in \{0,1\}^\mu$, can be written as algebraic constraints of the form $Q(\vv_{\idx,\inp,\wit}(X))=0$ for a certain collection of polynomials $Q$. See \cref{??} for a proof. 
+    
+    Hence, the membership constraints could be removed from the definition of $\REL_{\gp, \megaQ, \cS}$,  without altering its expressiveness. Later, however, we will want to prove membership constraints with lookup-type techniques, while dealing with the algebraic constraints with other type of schemes such as Spartan \cite{spartan} inspired ones. This is the reason why membership constraints are specified in $\REL_{\gp,\megaQ, \cS}$ with their own separate syntax.
+    \end{remark}
 
     \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, I)$ and $I$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit})\in I_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit})=0, \quad  \text{ for all }Q\in \cQ.$$
     \end{definition}
@@ -236,25 +250,58 @@ Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size par
 
 As a simple example, consider the function 
 %
-\begin{align}
+\begin{align*}
 f: [0, 2^{32}-1] &\to [0, 2^{32}-1]\\
 w &\mapsto (w\cdot w \mod 2^{32}) \XOR w
-\end{align}
+\end{align*}
 %
 where the operation $w\cdot w \mod 2^{32}$ here means squaring $w$ and taking as a result $w'$ the reduction of $w^2$ modulo $2^{32}$ in the range $[0,2^{32}-1]$. Then,  $w'\AND w$ means performing the bitwise AND operation between $w'$ and $w$ when $w'$ and $w$ are represented as strings of $32$ bits. After the bitwise operation is performed, the resulting string of $32$ bits $w''$ is reinterpreted as an integer in the range $[0, 2^{32}-1]$. 
 
-Say that a prover wants to show that it knows the result of computing $f^{2^{20}}(w_0)$ for some public integer $w\in [0, 2^{32}-1]$. Here $f^{2^{20}}(w_0)$ denotes the result of consecutively applying $f$ for $2^{20}$ times, starting with the input $w_0$. 
+Say that a prover wants to show that it knows the result of computing $f^{2^{20}}(w_0)$ for some public integer $w\in [0, 2^{32}-1]$. Here $f^{i}(w_0)$ denotes the result of consecutively applying $f$ for $i$ times, starting with the input $w_0$. 
 
 
-We proceed to describe an algebraic  constraint over $\QQ[X]$ modulo prime ideals, $\REL_{\gp, \megaQ}$, encoding the computation $f^{2^{20}}(w_0)$.
+We proceed to describe an algebraic  constraint over $\QQ[X]$ modulo prime ideals, $\REL_{\gp, \megaQ}$, encoding the computation $f^{2^{20}-1}(w_0)$.
 
-We begin by introducing the following notation: let  $u$ be a positive integer, and write $u= \sum_{i=1}^{\ceil{\log u}+1} u_i \cdot 2^{i-1}$, where $u_i\in \{0,1\}$ for all $i$. We let $\hat{u}$ denote the polynomial $\sum_{i=1}^{\ceil{\log u} +1} u_i\cdot X^{i-1}$.
+We begin by introducing the following notation: Denote the set of all polynomials of degree strictly less than $32$ with binary coefficients as $\{0,1\}^{< 32}[X]$. Consider the following bijection:
+%
+\begin{align*}
+\phi: [0,2^{32}-1] &\to \{0,1\}^{< 32}[X]\\
+u= \sum_{i=1}^{32} u_i\cdot 2^{i-1} &\mapsto \sum_{i=1}^{32} u_i \cdot X^{i-1},
+\end{align*}
+%
+above, the elements $u_i$ all belong to $\{0,1\}$ and $u= \sum_{i=1}^{32} u_i\cdot 2^{i-1}$ corresponds to the base-2 representation of $u$.  Now, define the following elements recursively for all $i\geq 0$:
+\begin{align*}
+    w_{i+1} &= f(w_i) \in [0, 2^{32}-1],\\ 
+    w_i' &= (w_i \cdot w_i \mod 2^{32}) \in  [0, 2^{32}-1],\\
+    \hat{w_{i+1}} &= \left(\phi(w_i') \XOR \phi(w_i)\right) \in \{0,1\}^{\leq 31}[X]\\
+     \ww&=(0, w_1,\ldots, w_{2^{20}-1}) \in [0,2^{32}-1]^{2^{20}},\\
+     \ww' &= (w_0',\ldots, w_{2^{20}-1}')\in [0,2^{32}-1]^{2^{20}},\\
+     \phi(\ww') &= (\phi(w_0'),\ldots, \phi(w_{2^{20}-1}'))\in (\{0,1\}^{< 32}[X])^{2^{20}},\\
+     \hat{\ww} &= (0,\hat{w_1}, \ldots, \hat{w_{2^{20}-1}})\phi(w_{2^{20}-1}'))\in (\{0,1\}^{< 32}[X])^{2^{20}}
+\end{align*}
+The vectors $\ww, \ww', \phi(\ww'), \hat{\ww}$ will be part of the witness $\wit$ in the index-instance-witness triple we will build. 
+
+Note that we look at all the elements $w_i, w_i', \phi(w_i'), \phi(w_i), \hat{w_i}$ as elements from the ring $\QQ[X]$. Observe that $w_i' =  (w_i \cdot w_i \mod 2^{32}) $  if and only if
+%
+$$
+w_i' = w_i \cdot w_i  + 2^{32}\cdot \mu_i
+$$
+for some $\mu_i \in \ZZ$. Similarly, $\hat{w_{i+1}} = \phi(w_i') \XOR \phi(w_i)$ if and only
+%
+$$
+\hat{w_{i+1}} - (\phi(w_i') + \phi(w_i)) + 2\cdot \eta_i \in I_{GF}
+$$
+where $I_{GF}$ is a fixed ideal generated by  a polynomial of degree $32$ which is irreducible both in $\FF[X]$ and in $\FF_2[X]$ \albert{needs more detail, maybe in a separate section}
+
+%
 
 
 
 
 
-\subsection{Other bitwise operations: bitwise AND, bit rotation, etc.}
+
+
+\subsubsection{Other bitwise operations: bitwise AND, bit rotation, etc.}
 
 \subsubsection{The SHA-256 compression function}
 
