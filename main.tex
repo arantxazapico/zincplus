@@ -94,7 +94,7 @@
 \begin{abstract}
 \end{abstract}
 
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 \begin{spacing}{0.8}
 {\footnotesize \tableofcontents}
 \end{spacing}
@@ -172,8 +172,8 @@ In this section we define the type of constraints we are interested in working o
 
 \newcommand{\megaQ}{\mathfrak{Q}}
 
-Let $I_1,\ldots, I_t$ be a collection of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of polynomials with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two. 
-We index the polynomials in $\cQ_i$ with elements from $\{0,1\}^{\log|\cQ_i|}$, for each $i\in [t]$. Denote 
+Let $I_1,\ldots, I_t$ be a collection of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of \empg{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
+Denote 
 %
 $$
 \megaQ = \{(\cQ_1, I_1), \ldots, \cQ_t, I_t\}.
@@ -185,9 +185,9 @@ Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size par
 	\item The \emph{index} $\idx$ contains $n$ oracles $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables.
 	 \item For each $i\in [t]$, $\cQ_t$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
      with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
-	\item $\wit$ is a vector consisting of $k$ multilinear polynomials $f_1(X;\YY),\ldots, f_k(X;\YY)$ from $\mainQpolyring^{\multilin}[\YY]$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
-	\item $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
-	\item For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
+	\item The witness $\wit$ is a vector consisting of $k$ multilinear polynomials $f_1(X;\YY),\ldots, f_k(X;\YY)$ from $\mainQpolyring^{\multilin}[\YY]$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
+	\item The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
+	\item For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
     i.e.
     $$
     Q(\vv_{\idx, \inp,\wit}(X)) \in I_t.
@@ -224,15 +224,53 @@ Let $\gp = (k, m, n, \mu, B)$ be global parameters, where $k,m,n,B$ are size par
     \end{equation*}
 
 
-    \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, I)$ and $I$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit})\in I_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit})=0, \quad  \text{ for all }Q\in \cQ$$
+    \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, I)$ and $I$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit})\in I_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit})=0, \quad  \text{ for all }Q\in \cQ.$$
     \end{definition}
     
-\subsection{Example: SHA256 hashing + RSA signature verification}\label{s: example_sha}
+\subsection{Examples}\label{s: example_sha}
+
+\subsubsection{Mixing the XOR operation and arithmetic modulo $2^n$}
+
+\newcommand{\AND}{\ \mathsf{AND}\ }
+\newcommand{\XOR}{\ \mathsf{XOR}\ }
+
+As a simple example, consider the function 
+%
+\begin{align}
+f: [0, 2^{32}-1] &\to [0, 2^{32}-1]\\
+w &\mapsto (w\cdot w \mod 2^{32}) \XOR w
+\end{align}
+%
+where the operation $w\cdot w \mod 2^{32}$ here means squaring $w$ and taking as a result $w'$ the reduction of $w^2$ modulo $2^{32}$ in the range $[0,2^{32}-1]$. Then,  $w'\AND w$ means performing the bitwise AND operation between $w'$ and $w$ when $w'$ and $w$ are represented as strings of $32$ bits. After the bitwise operation is performed, the resulting string of $32$ bits $w''$ is reinterpreted as an integer in the range $[0, 2^{32}-1]$. 
+
+Say that a prover wants to show that it knows the result of computing $f^{2^{20}}(w_0)$ for some public integer $w\in [0, 2^{32}-1]$. Here $f^{2^{20}}(w_0)$ denotes the result of consecutively applying $f$ for $2^{20}$ times, starting with the input $w_0$. 
+
+
+We proceed to describe an algebraic  constraint over $\QQ[X]$ modulo prime ideals, $\REL_{\gp, \megaQ}$, encoding the computation $f^{2^{20}}(w_0)$.
+
+We begin by introducing the following notation: let  $u$ be a positive integer, and write $u= \sum_{i=1}^{\ceil{\log u}+1} u_i \cdot 2^{i-1}$, where $u_i\in \{0,1\}$ for all $i$. We let $\hat{u}$ denote the polynomial $\sum_{i=1}^{\ceil{\log u} +1} u_i\cdot X^{i-1}$.
+
+
+
+
+
+\subsection{Other bitwise operations: bitwise AND, bit rotation, etc.}
+
+\subsubsection{The SHA-256 compression function}
+
+The SHA-256 compression function is applied to bitstrings of length $512$. At all times, there are $8$ variables $H_0,\ldots, H_7$ that are periodically updated.  These variables are initialized as specific constants.
+
+
+
+
+\subsubsection{SHA-256 hashing + RSA signature verification}
+
+\subsubsection{Lattice-based operations}
 
 
 \subsection{Reduction to strictly algebraic relations}
 
- In this section we provide a reduction of knowledge from a any relation of the form $\REL_{\gp, \cQ}$ to a strictly algebraic relation $\REL_{\gp, \cQ'}$ (cf.\ \cref{d: strictly_algebraic}), where $\cQ'$ consists of just one pair $(Q', I)$, with $I$ being the zero  ideal. 
+ In this section we provide a reduction of knowledge from  any relation of the form $\REL_{\gp, \megaQ}$ to a strictly algebraic relation $\REL_{\gp, \megaQ'}$ (cf.\ \cref{d: strictly_algebraic}), i.e.\ a relation where  $\megaQ'$ consists of just one pair $(Q', I)$ and $I$ is the zero  ideal. 
 
 
     \begin{lemma}
