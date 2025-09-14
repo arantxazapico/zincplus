@@ -218,11 +218,10 @@ Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
     \begin{equation*}
     \begin{aligned}
     \REL_{\gparams,\megaQ,\cS} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
-    & \gparams=(k,m,n,\mu, B),  \\
     & \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \ \YY=(Y_1,\ldots, Y_\mu), \\
             &(g_1(X;\YY),\dots,g_n(X;\YY))\in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
     & \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}),\\ &\yy(X)\in \mainQpolyring^{m},\\    
-        &\wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
+        &\wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{k},\\
         &Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
         &\vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
      \end{aligned}\right),\\
@@ -245,17 +244,18 @@ Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
 
 \subsubsection{Mixing the XOR operation and arithmetic modulo $2^n$}
 
-\newcommand{\AND}{\ \mathsf{AND}\ }
-\newcommand{\XOR}{\ \mathsf{XOR}\ }
+\newcommand{\and}{\ \mathsf{AND}\ }
+\newcommand{\xor}{\ \mathsf{XOR}\ }
+\newcommand{\eq}{\mathsf{eq}}
 
 As a simple example, consider the function 
 %
 \begin{align*}
 f: [0, 2^{32}-1] &\to [0, 2^{32}-1]\\
-w &\mapsto (w\cdot w \mod 2^{32}) \XOR w
+w &\mapsto (w\cdot w \mod 2^{32}) \xor w
 \end{align*}
 %
-where the operation $w\cdot w \mod 2^{32}$ here means squaring $w$ and taking as a result $w'$ the reduction of $w^2$ modulo $2^{32}$ in the range $[0,2^{32}-1]$. Then,  $w'\AND w$ means performing the bitwise AND operation between $w'$ and $w$ when $w'$ and $w$ are represented as strings of $32$ bits. After the bitwise operation is performed, the resulting string of $32$ bits $w''$ is reinterpreted as an integer in the range $[0, 2^{32}-1]$. 
+where the operation $w\cdot w \mod 2^{32}$ here means squaring $w$ and taking as a result $w'$ the reduction of $w^2$ modulo $2^{32}$ in the range $[0,2^{32}-1]$. Then,  $w'\xor w$ means performing the bitwise XOR operation between $w'$ and $w$ when $w'$ and $w$ are represented as strings of $32$ bits. After the bitwise operation is performed, the resulting string of $32$ bits $w''$ is reinterpreted as an integer in the range $[0, 2^{32}-1]$. 
 
 Say that a prover wants to show that it knows the result of computing $f^{2^{20}}(w_0)$ for some public integer $w\in [0, 2^{32}-1]$. Here $f^{i}(w_0)$ denotes the result of consecutively applying $f$ for $i$ times, starting with the input $w_0$. 
 
@@ -272,7 +272,7 @@ u= \sum_{i=1}^{32} u_i\cdot 2^{i-1} &\mapsto \sum_{i=1}^{32} u_i \cdot X^{i-1},
 above, the elements $u_i$ all belong to $\{0,1\}$ and $u= \sum_{i=1}^{32} u_i\cdot 2^{i-1}$ corresponds to the base-2 representation of $u$.  Now, define the following elements recursively for all $i\geq 0$:
 \begin{align*}
     w_i' &= (w_i \cdot w_i \mod 2^{32}) \in  [0, 2^{32}-1],\\
-    \hat{w_{i+1}} &= \left(\phi(w_i') \XOR \phi(w_i)\right) \in \{0,1\}^{\leq 31}[X]\\
+    \hat{w_{i+1}} &= \left(\phi(w_i') \xor \phi(w_i)\right) \in \{0,1\}^{\leq 31}[X]\\
         w_{i+1} &= f(w_i) = \phi^{-1}(\hat{w_{i+1}}) \in [0, 2^{32}-1],\\ 
      \ww&=(0, w_1,\ldots, w_{2^{20}-1}) \in [0,2^{32}-1]^{2^{20}},\\
      \ww' &= (w_0',\ldots, w_{2^{20}-1}')\in [0,2^{32}-1]^{2^{20}},\\
@@ -285,40 +285,75 @@ We introduce $4$ multilinear polynomials on $20$ variables $\YY=(Y_1,\ldots, Y_{
 We start by imposing the following membership constraints: For all $\yy\in \{0,1\}^{20}$,
 %
 \begin{equation}\label{e: example_membership_constraints}
-f(X;\yy), f'(X;\yy) \in [0,2^{32}-1], \quad g(X;\yy), g'(X;\yy) \in \{0,1\}^{<32}[X].
+f_1(X;\yy), f_1'(X;\yy) \in [0,2^{32}-1], \quad f_2(X;\yy), f_2'(X;\yy) \in \{0,1\}^{<32}[X].
 \end{equation}
 %
 For ease of notation, in what follows we represent elements from $\{0,1\}^{20}$ as integers in the range $[0, 2^{20}-1]$. 
 
-Assuming the membership constraints \cref{e: example_membership_constraints} hold, we have that $f'(X; i)= f(X;i)\cdot f(X;i) \mod 2^{32}$ if and only if 
+Assuming the membership constraints \cref{e: example_membership_constraints} hold, we have that $f_1'(X; i)= f_1(X;i)\cdot f_1(X;i) \mod 2^{32}$ if and only if 
 %
 $$
-f'(X; i)= (f(X;i)\cdot f(X;i) \mod 2^{32}) \quad \Leftrightarrow  f'(X; i)= f(X;i)\cdot f(X;i) + 2^{32} \mu_i(X)
+f_1'(X; i)= (f_1(X;i)\cdot f_1(X;i) \mod 2^{32}) \quad \Leftrightarrow  \quad f_1'(X; i)= f_1(X;i)\cdot f_1(X;i) + 2^{32} \mu_i(X)
 $$
 for some $\mu_i(X)\in \ZZ[X]$, for all $i=0,\ldots, 2^{20}-1$. Above, the operations and equality on the right-hand side  are all happening in the ring $\QQ[X]$.  Similarly, for all $i\in [1, 2^{20}]$ \albert{inconsistency of subindices?},
 %
 $$
-g(X; i+1)= g'(X;i)\XOR g(X;i) \quad \Leftrightarrow \quad  g(X; i+1) - (g'(X;i) + g(X;i)) + 2\cdot \eta_i(X) \in I_{GF}
+f_2(X; i+1)= f_2'(X;i)\xor f_2(X;i) \quad \Leftrightarrow \quad  f_2(X; i+1) - (f_2'(X;i) + f_2(X;i)) + 2\cdot \eta_i(X) \in I_{GF}
 $$
 for some $\eta_i \in \ZZ[X]$,  where $I_{GF}$ is a fixed ideal generated by  a polynomial of degree $32$ which is irreducible both in $\FF[X]$ and in $\FF_2[X]$ \albert{needs more detail, maybe in a separate section}.
 
 Further, as before assuming that \eqref{e: example_membership_constraints}, we have that for all $i\in [0, 2^{20}-1]$  \albert{turn into its own lemma}
 %
 $$
-f(X; i) = g(X; i) \quad \Leftrightarrow\quad f(X;i)-g(X;i) \in (X-2) 
+f_2(X; i) = \phi(f_1(X; i)) \quad \Leftrightarrow\quad f_2(X;i)-f_1(X;i) \in (X-2) 
 $$
 where $(X-2)$ denotes the ideal of $\QQ[X]$ generated by the polynomial $X-2$. And similarly,
 $$
-f'(X; i) = g'(X; i) \quad \Leftrightarrow\quad f'(X;i)-g'(X;i) \in (X-2). 
+f_2'(X; i) = \phi(_1'(X; i)) \quad \Leftrightarrow\quad f_2'(X;i)-f_1'(X;i) \in (X-2). 
 $$
 %
 % 
+We now have all we need to put together a relation of the form $\REL_{\gp, \megaQ, \cS}$ which encodes the computation $f^{2^{20}-1}(w_0)$.
 
+We set $\gp=(k=6,m=1,n=0,\mu=20, B)$ \albert{what $B$?}. The $k=6$ witness polynomials are $$\wit=(f_1(X;\YY), f_1'(X;\YY), f_2(X;\YY),  f_2'(X;\YY), \mu(X;\YY), \eta(X;\YY)),$$ where $\mu(X;\YY), \eta(X;\YY)$ satisfy $\mu(X;i)=\mu_i(X)$ and $\eta(X;i)=\eta_i(X)$ for each $i\in \{0,1\}^{20}$. Then we set $\cS=(S_1, \ldots, S_6)$ with
+%
+$$S_1 = S_2 = [0,2^{32}-1],\ S_3=S_4= \{0,1\}^{< 32}[X],\ S_5=S_6=\mainQpolyringmultilin.$$
+%
+Effectively, these choice of sets places the membership constraints from \cref{e: example_membership_constraints}. The selection $S_5, S_6$ is done so that there is effectively no membership constraint placed on the elements  $\mu(X;i)$ and $\eta(X;i)$, other than the already ``native'' membership constraint to the set of polynomials from $\QQ[X]$ representable with at most $B$ bits.
 
+We further have $\idx = \emptyset$ since we chose $n=0$. Now, we have $\yy(X) \in \mainQpolyring^m$ must consist of a single polynomial because we chose $m=1$. We let $\yy(X) = (w_0)$, i.e.\ $\yy(X)$ contains simply the initial public integer $w_0$ that our computation begins with. Then we have $$\inp = (\yy(X)=(w_0), \oracle{f_1(X;\YY)}, \oracle{f_2(X;\YY)}, \oracle{f_1'(X;\YY)}, \oracle{f_2'(X;\YY)}, \oracle{\mu(X;\YY)}, \oracle{\eta(X;\YY)}).$$
+%
+Finally, we select the tuple $\megaQ$ as follows. We let $\megaQ=\{(\cQ_1, I_1), (\cQ_2, I_2), (\cQ_3, I_3)\}$,
+where
+%
+\begin{align*}
+    &I_1 = \{0\}, &&\cQ_1\\
+    &I_2 = I_{GF}, &&\cQ_2\\
+    &I_3 = (X-2), && \cQ_3
+\end{align*}
 
+   \begin{equation*}
+    \begin{aligned}
+    &\REL_{\gparams,\megaQ,\cS} =\\ &\left\{ \left(\begin{aligned}&\idx,\\ &\inp;\\ &\wit\end{aligned}\right) \left| \ \begin{aligned}
+    & \idx = \emptyset, \ \YY=(Y_1,\ldots, Y_{20}), \inp =(w_0),\\    
+        &\wit = \left(\begin{split}&f_1(X;\YY), f_1'(X;\YY),\\ &f_2(X;\YY),  f_2'(X;\YY),\\ &\mu(X;\YY), \eta(X;\YY)\end{split}\right) \in \left(\mainQpolyringmultilin[\YY]\right)^{6},\\
+        &\textbf{Algebraic constraints mod ideal}\\
+        &\quad f_1'(X; i) - f_1(X;i)\cdot f_1(X;i) - 2^{32} \mu_i(X) = 0 \text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_2(X; i+1) - (f_2'(X;i) + f_2(X;i)) + 2\cdot \eta_i(X) \in I_{GF} \text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_2(X;i)-f_1(X;i) \in (X-2)\text{ for all } i\in \{0,1\}^{20},\\
+        &\quad f_2'(X;i)-f_1'(X;i) \in (X-2)\text{ for all } i\in \{0,1\}^{20},\\
+        &\textbf{Membership constraints}\\
+        &\quad  f_1(X;i), f_1'(X;i) \in [0,2^{32}-1], \text{ for all } i \in \{0,1\}^{20},\\ 
+        &\quad f_2(X;i), f_2'(X;i) \in \{0,1\}^{<32}[X],  \text{ for all } i \in \{0,1\}^{20}
+        %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
+    \end{aligned} \right.\right\}
+    \end{aligned}
+    \end{equation*}
 
+    Overall, there are $6$ witness multilinear polynomials on $20$ variables, $4\cdot 2^{20}$ algebraic constraints modulo ideals (with the last $2\cdot 2^{20}$ of them being batchable into $2^{20}$ constraints --cf.\ \cref{?}), and $4$ membership constraints for $4$ of the $6$ witness polynomials. 
 
-
+    \albert{How would this compare to a constraint fully expressed over a binary field, or over M31? Ask someone? }
+    
 \subsubsection{Other bitwise operations: bitwise AND, bit rotation, etc.}
 
 \subsubsection{The SHA-256 compression function}
