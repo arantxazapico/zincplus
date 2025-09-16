@@ -51,17 +51,17 @@
 \newcommand{\stylizedtitle}{\textsf{Zinc{+}}}
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \hypersetup{
-    colorlinks=true,
-    linkcolor=CadetBlue,
-    breaklinks=true,
-    citecolor=Periwinkle,      
-    urlcolor=Emerald,
-    pdftitle={\plaintitle},
-    pdfpagemode=FullScreen,
+  colorlinks=true,
+  linkcolor=CadetBlue,
+  breaklinks=true,
+  citecolor=Periwinkle,      
+  urlcolor=Emerald,
+  pdftitle={\plaintitle},
+  pdfpagemode=FullScreen,
 }
 \DefineBibliographyStrings{english}{%
-  backrefpage = {cited on p.},% originally "cited on page"
-  backrefpages = {cited on pp.},% originally "cited on pages"
+backrefpage = {cited on p.},% originally "cited on page"
+backrefpages = {cited on pp.},% originally "cited on pages"
 }
 % Remove starred sections from toc
 \DeclareRobustCommand{\SkipTocEntry}[5]{} 
@@ -81,7 +81,7 @@
 }
 
 \author{
-	Albert Garreta, Psi Vesely, Arantxa Zapico
+Albert Garreta, Psi Vesely, Arantxa Zapico
 }
 \date{\today}
 
@@ -102,13 +102,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\cR}{\mathcal{R}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 \label{sec:introduction}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -117,9 +113,14 @@
 \section{Preliminaries}
 \label{sec:preliminaries}
 
-        
+      
 
-\subsection{Rings and rings of polynomials} Throughout the paper we extensively work with multivariate polynomials whose coefficients are polynomials themselves. Formally, given a ring $\cR$ and variables $\YY=(Y_1,\ldots, Y_\mu)$, we let $\cR[\YY]$ denote the ring of multivariate polynomials on variables $\YY$, with coefficients inn $\cR$. For us, typically $\cR$ will be of the form $\ZZ[X]$ or $\QQ[X]$ (or even $\local{q}[X]$ for some prime $q$). In that case, $\cR[\YY]$ contains all polynomials on variables $\YY$ whose coefficients are polynomials from $\ZZ[X]$ (or $\QQ[X]$, or $\local{q}[X]$). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Rings, rings of polynomials, and multilinear extensions}
+\label{sec:rings-and-multilinear-extensions}
+
+Throughout the paper we extensively work with multivariate polynomials whose coefficients are polynomials themselves. Formally, given a ring $\cR$ and variables $\YY=(Y_1,\ldots, Y_\mu)$, we let $\cR[\YY]$ denote the ring of multivariate polynomials on variables $\YY$, with coefficients inn $\cR$. For us, typically $\cR$ will be of the form $\ZZ[X]$ or $\QQ[X]$ (or even $\local{q}[X]$ for some prime $q$). In that case, $\cR[\YY]$ contains all polynomials on variables $\YY$ whose coefficients are polynomials from $\ZZ[X]$ (or $\QQ[X]$, or $\local{q}[X]$). 
 
 The ring $(\ZZ[X])[\YY]$ is isomorphic to the ring $\ZZ[X, \YY]$ of all polynomials with integer coefficients on variables $(X,\YY)$  (and similarly for $(\QQ[X])[\YY]$ and $(\local{q}[X])[\YY]$). However, in this work we do not use this isomorphic representation of our polynomials, and insist on viewing elements from $(\ZZ[X])[\YY]$ as polynomials on the variables $\YY$ with coefficients in $\ZZ[X]$. We denote such a polynomial by $$f(X;\YY),$$
 highlighting the presence of the variable $X$, even though strictly speaking we look at $f$ as a polynomial on the variables $\YY$. The reason for doing so is that sometimes we will want to evaluate $X$ at a specific value $x$ \albert{I think we are not doing that anymore because `` evaluation at $x$'' is equivalent to membership to the ideal $(X-x)$} \alberturgent{Decide if keeping the $X$ soon, otherwise it will be too difficult to remove --or put a macro for it}, obtaining a polynomial $f(x;\YY)$ in $\ZZ[\YY]$, and sometimes we will need to evaluate the variables $\YY$ at a specific values $\yy$, and we will look at the result as  a polynomial $f(X,\yy)$ in $\ZZ[X]$. 
@@ -131,9 +132,52 @@ For every ring $\cR$  we fix a publicly known representation of its elements as 
 
 In the special case of rings of the form $\cR[X]$, we write $$\cR_{\leq B, d}[X]$$ to denote the set of polynomials of degree strictly less than $d$ with coefficients in $\cR_{\leq B}$.
 
+\paragraph{Localization of rationals at a prime}
+\label{sec:local-rings}
+
+The \emph{localization of $\QQ$ at a prime number $q$} is the set 
+%
+$$
+\loc{q} = \left\{\frac{a}{b}\ \left| \ \begin{aligned}&\frac{a}{b}\in \QQ,\\  &b\not \equiv  0 \mod q \end{aligned}\right.\right\}.
+$$
+It is well-known that $\loc{q}$ is a ring. Further, $\loc{q}$ admits the following ring-homomorphism:
+%
+\begin{align*}
+\phi_q: \loc{q} &\to \FF_q\\
+a/b & \mapsto a \cdot b^{-1}
+\end{align*}
+where $\FF_q$ is the finite field with $q$ elements, and $b^{-1}$ above denotes the inverse of $b$ modulo the prime $q$. The kernel $\ker(\phi_q)$ of $\phi_q$ is the subring of elements of $\loc{q}$ that are mapped to $0$ by $\phi_q$. We have
+%
+$$
+\ker(\phi_q) = q\loc{q} = \{a/b\in \loc{q}\mid a\equiv 0 \mod q \}.
+$$
+%
+An \emph{integral domain} is a ring $\cD$ where whenever $a\cdot b=0$ for some $a,b\in \cD$, it must be the case that either $a$ or $b$ are zero. The ring of integers $\ZZ$ is an integral domain, and any field is an integral domain. If $\cD$ is an integral domain, then one can define its \emph{field of fractions}, which is the field comprised of elements of the form $a/b$, and whose addition and multiplication operations are analogous to how rational addition and multiplication work. Indeed, the field of rational numbers $\QQ$ is the field of fractions of $\ZZ$.
+
+\paragraph{Multilinear polynomials and multilinear extensions (MLE) over a ring}
+\label{sec:multilinear-extensions}
+
+Let $\R$ be a ring. Let $\mu\geq 1$ and let $\XX=(X_1,\ldots, X_\mu)$ be a tuple of variables. It is well known \cite{thaler_book} that a multilinear polynomial $f(\XX)\in \R^{\multilin}[\XX]$ is uniquely defined by the multiset of the values it takes on $\BB^\mu$, i.e. $f(\BB^\mu)\defeq \left\{ f(\xx)\mid \xx\in \R^\mu\right\}$. In other words, any two $f,g\in \R^{\multilin}[\XX]$ such that $f(\xx)=g(\xx)$ for all $\xx\in \BB^\mu$ are the same polynomial. Further, given a map $f: \BB^\mu \to \R$, there always exists a unique multilinear polynomial on $\mu$ variables, denoted $\multilinmle{f}(\XX)$, such that $\multilinmle{f}(\xx)= f(\xx)$ for all $\xx\in \BB^\mu$. It is given by the expression
+%
+\begin{equation}\label{e: MLE}
+    \multilinmle{f}(\XX)\defeq \sum_{\xx\in \BB^\mu} f(\xx)\cdot \meq(\xx; \XX) 
+\end{equation}
+%
+where $\meq(\xx; X)$ is the unique multilinear polynomial on $\mu$ variables that takes the value $0$ on all points of the hypercube $\BB^\mu$, except at $\xx$ where it takes the value $1$. Precisely,
+%
+$$
+\meq(\xx; \XX) \defeq \prod_{i\in [\mu]} \left(x_i X_i - (1-x_i)(1-X_i)\right).
+$$
+This unique multilinear polynomial $\multilinmle{f}(\XX)$ is called the \emph{multilinear extension (MLE)} of $f$. Given a vector $\mathbf{v}=(v_1,\ldots, v_{2^\mu}) \in \R^{2^\mu}$, we define the MLE of $\mathbf{v}$ (denoted by $\multilinmle{\mathbf{v}}(\XX)$) as the MLE of the map $\mathbf{v}:\BB^{\mu}\to \R$ assigning to each element $\xx\in \BB^{\mu}$ the element $v_\xx$, where here we interpret $\xx$ as the natural number whose binary representation is $\xx$. 
+
 %\alberturgent{In case of polynomial rings $\cR[X]$, do we need to specify a degree bound? Technically not, but having a single size parameter could allow for wiggle room of degrees, making some descriptions and analysis a bit more tricky. Also Zip+ is designed having in mind that there's a fixed degree bound. We could have $B$ be a finite subset of $\cR$ instead of a bit bound}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Commutative algebra}
+\label{sec:commutative-algebra}
+
 All rings considered in this paper are associative, commutative, and have a multiplicative identity. Let $\cR$ be a ring. A subset $I$ of $\cR$ is an \emph{ideal} of $\cR$ if for all $a\in I$ and $b\in \cR$, one has $a\cdot b \in I$, and $I$ is additively closed, i.e.\ $a_1 + a_2 \in I$ for all $a_1, a_2\in I$. The ideal generated by a set of elements $S\subseteq \cR$ is the set $\{\sum_{s\in S} a_s \cdot s \mid (a_s)_{s\in S}\in \cR^{|S|}\}$. An ideal is \emph{prime} if for all $a,b\in \cR$ such that $a\cdot b \in I$, one has that either $a$ or $b$ belongs to $I$. 
 
 Given a ring $\cR$ and an ideal $I$ of $\cR$, the \emph{quotient ring} of $\cR$ by $I$ is the set  $\cR/I =\{a+I \mid a\in \cR\}$. The set $\cR/I$ is itself a ring under the natural addition and multiplication operations.  The map $\pi:\cR\to \cR/I$ sending each $a\in \cR$ to $a+I$ is a ring homomorphism which we call the \emph{natural projection of $\cR$ onto $\cR/I$.}
@@ -208,69 +252,73 @@ $$
 Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
 %Let $\evalconstraints$ be a set of triples $(i, j, a)$ where $i,j\in [k]$ and $a \in \QQ$. 
 %
- 
- An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \cQ,\cS}$ of triples $(\idx, \inp;\wit)$ with the following properties:
+
+An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \cQ,\cS}$ of triples $(\idx, \inp;\wit)$ with the following properties:
 \begin{itemize}
-	\item \textbf{Index.} The \emph{index} $\idx$ contains $n$ oracles \albert{maybe $n$ should be the size of the witness, it's more standard} $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables. 
-	 \item \textbf{Constraint polynomials.} For each $i\in [t]$, $\cQ_t$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
-     with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
-	\item \textbf{Witness} The \emph{witness} $\wit$ is consists of $k$ multilinear polynomials $f_{1}(X;\YY),\ldots, f_{k}(X;\YY))$ from $\mainQpolyring^{\multilin}[\YY]$. %We denote these vectors by $\ff_1(X;\YY), \ldots, \ff_r(X;\YY)$ and their entries as $\ff_{i}(X;\YY)=(f_{i1}(X;\YY),\ldots, f_{ik}(X;\YY))$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
-	\item \textbf{Public instance.} The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
-	\item \textbf{Algebraic constraints modulo prime idelas.} For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
-    i.e.
-    $$
-    Q(\vv_{\idx, \inp,\wit}(X)) \in I_t.
-    $$
-    \item \textbf{Membership constraints.} For each $i\in [k]$ be have that $f_i(X;\yy) \in S_i$ for all $\yy\in \{0,1\}^\mu$.
-    %\item For each  polynomial $Q \in \cQ$, we have that $Q$ vanishes  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
-    %i.e.
-    %$$
-    %Q(\vv_{\idx, \inp,\wit}(X)) =0.
-    %$$
-    %\item \albert{New thing wrt Zinc!} For each $(i,j,a)\in \evalconstraints$ we have
-    %
-    %$$
-    %f_i(a; \yy) = f_j(a;\yy) \quad \text{for all } \yy\in \{0,1\}^\mu.
-    %$$
-    %\albert{Should we allow for X-evaluations of elements in the public instance?}
-	\end{itemize}
+\item \textbf{Index.} The \emph{index} $\idx$ contains $n$ oracles \albert{maybe $n$ should be the size of the witness, it's more standard} $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables. 
+  \item \textbf{Constraint polynomials.} For each $i\in [t]$, $\cQ_t$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
+    with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
+\item \textbf{Witness} The \emph{witness} $\wit$ is consists of $k$ multilinear polynomials $f_{1}(X;\YY),\ldots, f_{k}(X;\YY))$ from $\mainQpolyring^{\multilin}[\YY]$. %We denote these vectors by $\ff_1(X;\YY), \ldots, \ff_r(X;\YY)$ and their entries as $\ff_{i}(X;\YY)=(f_{i1}(X;\YY),\ldots, f_{ik}(X;\YY))$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
+\item \textbf{Public instance.} The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
+\item \textbf{Algebraic constraints modulo prime idelas.} For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
+  i.e.
+  $$
+  Q(\vv_{\idx, \inp,\wit}(X)) \in I_t.
+  $$
+  \item \textbf{Membership constraints.} For each $i\in [k]$ be have that $f_i(X;\yy) \in S_i$ for all $\yy\in \{0,1\}^\mu$.
+  %\item For each  polynomial $Q \in \cQ$, we have that $Q$ vanishes  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
+  %i.e.
+  %$$
+  %Q(\vv_{\idx, \inp,\wit}(X)) =0.
+  %$$
+  %\item \albert{New thing wrt Zinc!} For each $(i,j,a)\in \evalconstraints$ we have
+  %
+  %$$
+  %f_i(a; \yy) = f_j(a;\yy) \quad \text{for all } \yy\in \{0,1\}^\mu.
+  %$$
+  %\albert{Should we allow for X-evaluations of elements in the public instance?}
+\end{itemize}
 %
-    Formally, $\REL_{\gparams,\megaQ, \cS}$ has the following form:
-    %
-    \begin{equation*}
-    \begin{aligned}
-    \REL_{\gparams,\megaQ,\cS} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
-    &\textbf{Index-instance-witness}\\
-    &\quad \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \ \YY=(Y_1,\ldots, Y_\mu), \\
-            &\quad(g_1(X;\YY),\dots,g_n(X;\YY))\in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
-    &\quad \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}),\\ &\quad \yy(X)\in \mainQpolyring^{m},\\    
-        &\quad \wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{k},\\
-        &\textbf{Algebraic constraints mod ideal}\\
-        &\quad Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
-        &\quad \vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
-     \end{aligned}\right),\\
-     &\textbf{Membership constraints}\\
-        &\quad f_i(X,\yy)\in S_i \text{ for all } i\in [k], \yy\in \{0,1\}^\mu
-        %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
-    \end{aligned} \right.\right\}
-    \end{aligned}
-    \end{equation*}
+  Formally, $\REL_{\gparams,\megaQ, \cS}$ has the following form:
+  %
+  \begin{equation*}
+  \begin{aligned}
+  \REL_{\gparams,\megaQ,\cS} = \left\{ (\idx, \inp ; \wit) \left| \ \begin{aligned}
+  &\textbf{Index-instance-witness}\\
+  &\quad \idx = ( \oracle{g_1(X;\YY)},\ldots, \oracle{g_n(X;\YY)}), \ \YY=(Y_1,\ldots, Y_\mu), \\
+          &\quad(g_1(X;\YY),\dots,g_n(X;\YY))\in \left(\mainQpolyringmultilin[\YY]\right)^{n},\\
+  &\quad \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}),\\ &\quad \yy(X)\in \mainQpolyring^{m},\\    
+      &\quad \wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{k},\\
+      &\textbf{Algebraic constraints mod ideal}\\
+      &\quad Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
+      &\quad \vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
+    \end{aligned}\right),\\
+    &\textbf{Membership constraints}\\
+      &\quad f_i(X,\yy)\in S_i \text{ for all } i\in [k], \yy\in \{0,1\}^\mu
+      %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
+  \end{aligned} \right.\right\}
+  \end{aligned}
+  \end{equation*}
 
-    \begin{remark}[The membership constraints are algebraic constraints]
-    The membership constraints, namely $f_i(X,\yy) \in S_i$ for all $i\in [k]$, $\yy\in \{0,1\}^\mu$, can be written as algebraic constraints of the form $Q(\vv_{\idx,\inp,\wit}(X))=0$ for a certain collection of polynomials $Q$. See \cref{??} for a proof. 
-    
-    Hence, the membership constraints could be removed from the definition of $\REL_{\gp, \megaQ, \cS}$,  without altering its expressiveness. Later, however, we will want to prove membership constraints with lookup-type techniques, while dealing with the algebraic constraints with other type of schemes such as Spartan~\cite{C:Setty20} inspired ones. This is the reason why membership constraints are specified in $\REL_{\gp,\megaQ, \cS}$ with their own separate syntax.
-    \end{remark}
+  \begin{remark}[The membership constraints are algebraic constraints]
+  The membership constraints, namely $f_i(X,\yy) \in S_i$ for all $i\in [k]$, $\yy\in \{0,1\}^\mu$, can be written as algebraic constraints of the form $Q(\vv_{\idx,\inp,\wit}(X))=0$ for a certain collection of polynomials $Q$. See \cref{??} for a proof. 
+  
+  Hence, the membership constraints could be removed from the definition of $\REL_{\gp, \megaQ, \cS}$,  without altering its expressiveness. Later, however, we will want to prove membership constraints with lookup-type techniques, while dealing with the algebraic constraints with other type of schemes such as Spartan~\cite{C:Setty20} inspired ones. This is the reason why membership constraints are specified in $\REL_{\gp,\megaQ, \cS}$ with their own separate syntax.
+  \end{remark}
 
-    \begin{remark}
-        \albert{Emphasize that membership constraints are proved via a lookup ran over a random prime field $\FF$ and that the SOS decomposed witness only needs to be committed over $\FF$}
-    \end{remark}
+  \begin{remark}
+      \albert{Emphasize that membership constraints are proved via a lookup ran over a random prime field $\FF$ and that the SOS decomposed witness only needs to be committed over $\FF$}
+  \end{remark}
 
-    \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, I)$ and $I$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit}(X))\in I_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit}(X))=0, \quad  \text{ for all }Q\in \cQ.$$
-    \end{definition}
-    
-\subsection{Examples}\label{s: example_sha}
+  \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, I)$ and $I$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit}(X))\in I_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit}(X))=0, \quad  \text{ for all }Q\in \cQ.$$
+  \end{definition}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Examples}
+\label{sec:example-sha}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Mixing the bitwise XOR operation and arithmetic modulo $2^n$}
 
 \newcommand{\and}{\ \mathsf{AND}\ }
@@ -300,14 +348,14 @@ v= \sum_{i=1}^{32} v_i\cdot 2^{i-1} &\mapsto \sum_{i=1}^{32} v_i \cdot X^{i-1},
 %
 above, the elements $v_i$ all belong to $\{0,1\}$ and $v= \sum_{i=1}^{32} v_i\cdot 2^{i-1}$ corresponds to the base-2 representation of $v$.  Now, define the following elements and vectors  for all $i\in [ 2^{20}-1]$. We omit referring to $X$ even though many of these elements and vectors depend on $X$:
 \begin{align*}
-    u_i' &= (u_i \cdot u_i \mod 2^{32}) &&\in  [0, 2^{32}-1],\\
-    u_{i+1} &=  f(u_i)=\phi^{-1}\left(\phi(u_i') \xor \phi(u_i)\right) &&\in \{0,1\}^{\leq 31}[X],\\
-       % w_{i+1} &= f(w_i) = \phi^{-1}(\hat{w_{i+1}}) &&\in [0, 2^{32}-1],\\ 
-     \uu&=(u_1,\ldots, u_{2^{20}}) &&\in [0,2^{32}-1]^{2^{20}},\\
-     \uu' &= (u_1',\ldots, u_{2^{20}-1}', 0) &&\in [0,2^{32}-1]^{2^{20}},\\
-          \phi(\uu) &= (\phi(u_1),\ldots, \phi(u_{2^{20}}))&& \in (\{0,1\}^{< 32}[X])^{2^{20}},\\
-     \phi(\uu') &= (\phi(u_1'),\ldots, \phi(u_{2^{20}-1}'),0) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}.%\\
-     %\hat{\ww} &= (0,\hat{w_2}, \ldots, \hat{w_{2^{20}}}) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}
+  u_i' &= (u_i \cdot u_i \mod 2^{32}) &&\in  [0, 2^{32}-1],\\
+  u_{i+1} &=  f(u_i)=\phi^{-1}\left(\phi(u_i') \xor \phi(u_i)\right) &&\in \{0,1\}^{\leq 31}[X],\\
+      % w_{i+1} &= f(w_i) = \phi^{-1}(\hat{w_{i+1}}) &&\in [0, 2^{32}-1],\\ 
+    \uu&=(u_1,\ldots, u_{2^{20}}) &&\in [0,2^{32}-1]^{2^{20}},\\
+    \uu' &= (u_1',\ldots, u_{2^{20}-1}', 0) &&\in [0,2^{32}-1]^{2^{20}},\\
+        \phi(\uu) &= (\phi(u_1),\ldots, \phi(u_{2^{20}}))&& \in (\{0,1\}^{< 32}[X])^{2^{20}},\\
+    \phi(\uu') &= (\phi(u_1'),\ldots, \phi(u_{2^{20}-1}'),0) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}.%\\
+    %\hat{\ww} &= (0,\hat{w_2}, \ldots, \hat{w_{2^{20}}}) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}
 \end{align*}
 The $0$'s at the end of $\uu', \phi(\uu')$ can be chosen arbitrarily: our computation never accesses these entries of the vectors, and so these entries are not be subject to any constraint whatsoever.
 
@@ -370,17 +418,17 @@ Finally, we select the tuple $\megaQ$ as follows. We let $\megaQ=\{(\cQ_1, I_1),
 where for all $i\in [2^{20}-1]$ (recall we identify $\{0,1\}^{20}$ and $[2^{20}]$)
 %
 \begin{align*}
-    &I_1 = \{0\}, &&\cQ_1=(Q_{1i})_{i\in [2^{20}-1]},\\
-    &I_2 = \{0\}, &&\cQ_2=(Q_{2i})_{i\in [2^{20}-1]},\\
-    &I_3 =(X-2), &&\cQ_3=(Q_{3i})_{i\in [2^{20}]},\\
-      &I_4 =(X-2), &&\cQ_4=(Q_{4i})_{i\in [2^{20}-1]},
+  &I_1 = \{0\}, &&\cQ_1=(Q_{1i})_{i\in [2^{20}-1]},\\
+  &I_2 = \{0\}, &&\cQ_2=(Q_{2i})_{i\in [2^{20}-1]},\\
+  &I_3 =(X-2), &&\cQ_3=(Q_{3i})_{i\in [2^{20}]},\\
+    &I_4 =(X-2), &&\cQ_4=(Q_{4i})_{i\in [2^{20}-1]},
 \end{align*}
 with
 \begin{align*}
-    Q_{1i}(\vv_{\inp,\wit}(X))&=f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X),&& \text{for all } i\in [2^{20}],\\
-    Q_{2i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X),&& \text{for all } i\in [2^{20}-1],\\
-    Q_{3i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X;i)-f_{\uu}(X;i), && \text{for all } i\in [2^{20}],\\
-    Q_{4i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i), && \text{for all } i\in [2^{20}-1].
+  Q_{1i}(\vv_{\inp,\wit}(X))&=f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X),&& \text{for all } i\in [2^{20}],\\
+  Q_{2i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X),&& \text{for all } i\in [2^{20}-1],\\
+  Q_{3i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X;i)-f_{\uu}(X;i), && \text{for all } i\in [2^{20}],\\
+  Q_{4i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i), && \text{for all } i\in [2^{20}-1].
 \end{align*}
 We also want to make sure that $f_{\uu}(X; 1)= u_1$. We add this extra constraints as a new tuple  $(\cQ_5, I_5)$ where $I_5=\{0\}$ and $\cQ_5=\{Q_5\}$ with $Q_5(\vv_{\inp,\wit})= f_{\uu}(X;1)-u_1$.
 
@@ -392,30 +440,31 @@ $$
 for our fixed bitstring representation of elements from $\QQ[X]$.
 
 Putting everything together, we obtain the following relation for the computation $f^{2^{20}-1}(w_0)$ (again, recall we identify the sets $\{0,1\}^{20}$ and $[2^20]$):
-   \begin{equation*}
-    \begin{aligned}
-    &\REL_{\gparams,\megaQ,\cS} =\\ &\left\{ \left(\begin{aligned}&\idx,\\ &\inp;\\ &\wit\end{aligned}\right) \left| \ \begin{aligned}
-        &\textbf{Index-instance-witness}\\
-    &\quad \idx = \emptyset, \ \YY=(Y_1,\ldots, Y_{20}), \inp =(u_1),\\    
-        &\quad  \wit = \left(\begin{split}&f_{\uu}(X;\YY), f_{\uu'}(X;\YY),\\ &f_{\phi(\uu)}(X;\YY),  f_{\phi(\uu')}(X;\YY),\\ &\mu(X;\YY), \eta(X;\YY)\end{split}\right) \in \left(\mainQpolyringmultilin[\YY]\right)^{6},\\
-        &\textbf{Algebraic constraints mod ideal}\\
-        &\quad f_{\uu}(X;1)-u_1 = 0,\\
-        &\quad f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X) = 0 \text{ for all } i\in [2^{20}-1],\\
-        &\quad f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X) =0 \text{ for all } i\in [2^{20}-1],\\
-        &\quad f_{\phi(\uu)}(X;i)-f_{\uu}(X;i) \in (X-2)\text{ for all } i\in [2^{20}],\\
-        &\quad f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i) \in (X-2)\text{ for all } i\in [2^{20}-1],\\
-        &\textbf{Membership constraints}\\
-        &\quad  f_{\uu}(X;i), f_{\uu'}(X;i) \in [0,2^{32}-1], \text{ for all } i \in \{0,1\}^{20},\\ 
-        &\quad f_{\phi(\uu)}(X;i), f_{\phi(\uu')}(X;i) \in \{0,1\}^{<32}[X],  \text{ for all } i \in \{0,1\}^{20}
-        %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
-    \end{aligned} \right.\right\}
-    \end{aligned}
-    \end{equation*}
+  \begin{equation*}
+  \begin{aligned}
+  &\REL_{\gparams,\megaQ,\cS} =\\ &\left\{ \left(\begin{aligned}&\idx,\\ &\inp;\\ &\wit\end{aligned}\right) \left| \ \begin{aligned}
+      &\textbf{Index-instance-witness}\\
+  &\quad \idx = \emptyset, \ \YY=(Y_1,\ldots, Y_{20}), \inp =(u_1),\\    
+      &\quad  \wit = \left(\begin{split}&f_{\uu}(X;\YY), f_{\uu'}(X;\YY),\\ &f_{\phi(\uu)}(X;\YY),  f_{\phi(\uu')}(X;\YY),\\ &\mu(X;\YY), \eta(X;\YY)\end{split}\right) \in \left(\mainQpolyringmultilin[\YY]\right)^{6},\\
+      &\textbf{Algebraic constraints mod ideal}\\
+      &\quad f_{\uu}(X;1)-u_1 = 0,\\
+      &\quad f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X) = 0 \text{ for all } i\in [2^{20}-1],\\
+      &\quad f_{\phi(\uu)}(X; i+1) - (f_{\phi(\uu')}(X;i) + f_{\phi(\uu)}(X;i)) + 2\cdot \eta_i(X) =0 \text{ for all } i\in [2^{20}-1],\\
+      &\quad f_{\phi(\uu)}(X;i)-f_{\uu}(X;i) \in (X-2)\text{ for all } i\in [2^{20}],\\
+      &\quad f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i) \in (X-2)\text{ for all } i\in [2^{20}-1],\\
+      &\textbf{Membership constraints}\\
+      &\quad  f_{\uu}(X;i), f_{\uu'}(X;i) \in [0,2^{32}-1], \text{ for all } i \in \{0,1\}^{20},\\ 
+      &\quad f_{\phi(\uu)}(X;i), f_{\phi(\uu')}(X;i) \in \{0,1\}^{<32}[X],  \text{ for all } i \in \{0,1\}^{20}
+      %& f_i(a;\yy)=f_j(a;\yy)  \text{ for all } \yy\in \{0,1\}^\mu \text{ and } (i,j,a)\in \evalconstraints
+  \end{aligned} \right.\right\}
+  \end{aligned}
+  \end{equation*}
 
-    Overall, there are $6$ witness multilinear polynomials on $20$ variables, $1 +4\cdot 2^{20}$ algebraic constraints modulo ideals, and $4$ membership constraints for $4$ of the $6$ witness polynomials. 
+  Overall, there are $6$ witness multilinear polynomials on $20$ variables, $1 +4\cdot 2^{20}$ algebraic constraints modulo ideals, and $4$ membership constraints for $4$ of the $6$ witness polynomials. 
 
-    \albert{How would this compare to a constraint fully expressed over a binary field, or over M31? Ask someone? }
-    
+  \albert{How would this compare to a constraint fully expressed over a binary field, or over M31? Ask someone? }
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Other bitwise operations: bitwise AND, bit rotation, etc.}
 
 
@@ -452,6 +501,7 @@ u &\mapsto (u\cdot u \mod 2^{32}) \and u.
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{The SHA-256 compression function}
 
 The SHA-256 compression function is applied to bitstrings of length $512$. At all times, there are $8$ variables $H_0,\ldots, H_7$ that are periodically updated.  These variables are initialized as specific constants.
@@ -459,43 +509,48 @@ The SHA-256 compression function is applied to bitstrings of length $512$. At al
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{SHA-256 hashing + RSA signature verification}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Lattice-based operations}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Reduction to strictly algebraic relations}
+\label{sec:reduction-to-algebraic-relations}
 
- In this section we provide a reduction of knowledge from  any relation of the form $\REL_{\gp, \megaQ}$ to a strictly algebraic relation $\REL_{\gp, \megaQ'}$ (cf.\ \cref{d: strictly_algebraic}), i.e.\ a relation where  $\megaQ'$ consists of just one pair $(Q', I)$ and $I$ is the zero  ideal. 
+In this section we provide a reduction of knowledge from  any relation of the form $\REL_{\gp, \megaQ}$ to a strictly algebraic relation $\REL_{\gp, \megaQ'}$ (cf.\ \cref{d: strictly_algebraic}), i.e.\ a relation where  $\megaQ'$ consists of just one pair $(Q', I)$ and $I$ is the zero  ideal. 
 
 
-    \begin{lemma}
-    Let $f(X;\YY) \in (\QQ[X])^{\multilin}[\YY]$ be a multilinear polynomial on variables $\YY= (Y_1,\ldots, Y_\mu)$ and coefficients in $\QQ[X]$. Let $i(X) \in \QQ[X]$ be a non-constant irreducible polynomial, and let $I$ be the ideal of $\QQ[X]$ generated by $I$. 
+  \begin{lemma}
+  Let $f(X;\YY) \in (\QQ[X])^{\multilin}[\YY]$ be a multilinear polynomial on variables $\YY= (Y_1,\ldots, Y_\mu)$ and coefficients in $\QQ[X]$. Let $i(X) \in \QQ[X]$ be a non-constant irreducible polynomial, and let $I$ be the ideal of $\QQ[X]$ generated by $I$. 
+  
+  Assume $f(X;\yy)\not\in I$ for some $\yy\in \QQ^\mu$. Let $S$ be a finite subset of $\QQ$. Then the number of elements $\rr\in S^\mu$ such that $f(X;\rr)\in I$ is a most $|S|^{\mu-1}$.
+  \end{lemma}
+  \begin{proof}
+  Let $\dom= \QQ[X]/I$ and let  $\pi:\QQ[X] \to D$ be the natural projection of $\QQ[X]$ onto $\dom$. The ring $\dom$ is an integral domain by \cref{r: domain_prime}, and so $\dom$ is a subring of a field $\KK$. Let $\pi:(\QQ[X])[\YY]\to D[\YY]$ be the natural extension of $\pi$ for polynomials (cf.\ \cref{??}). Let $g(\YY) = \pi(f(X;\YY))$, i.e.\ $g(\YY)$ is the result of applying $\pi$ to the coefficients of $f$ (with respect to any basis, like the monomial basis). 
+  
+    If the polynomial $g(\YY) \in D[\YY]$ was the zero polynomial, then we would have $g(\yy) = 0$, which means that $\pi(f(X;\yy))\in I$, contradicting our assumptions. Hence $g(\YY)$ is not the zero polynomial. Moreover, $|\pi(S)|=|S|$, because whenever $\pi(s_1) = \pi(s_2)$ for some $s_1,s_2\in S$, we have $s_1 - s_2 \in  I$. But $S$ contains only constant polynomials, while all elements of $I$ are either zero or nonconstant polynomials (because $I$ is generated by a non-constant polynomial). Hence the only possibility is that $s_1=s_2$.  We conclude that $\pi$ is a bijection between $S$ and $\pi(S)$.
     
-    Assume $f(X;\yy)\not\in I$ for some $\yy\in \QQ^\mu$. Let $S$ be a finite subset of $\QQ$. Then the number of elements $\rr\in S^\mu$ such that $f(X;\rr)\in I$ is a most $|S|^{\mu-1}$.
-    \end{lemma}
-    \begin{proof}
-    Let $\dom= \QQ[X]/I$ and let  $\pi:\QQ[X] \to D$ be the natural projection of $\QQ[X]$ onto $\dom$. The ring $\dom$ is an integral domain by \cref{r: domain_prime}, and so $\dom$ is a subring of a field $\KK$. Let $\pi:(\QQ[X])[\YY]\to D[\YY]$ be the natural extension of $\pi$ for polynomials (cf.\ \cref{??}). Let $g(\YY) = \pi(f(X;\YY))$, i.e.\ $g(\YY)$ is the result of applying $\pi$ to the coefficients of $f$ (with respect to any basis, like the monomial basis). 
-    
-     If the polynomial $g(\YY) \in D[\YY]$ was the zero polynomial, then we would have $g(\yy) = 0$, which means that $\pi(f(X;\yy))\in I$, contradicting our assumptions. Hence $g(\YY)$ is not the zero polynomial. Moreover, $|\pi(S)|=|S|$, because whenever $\pi(s_1) = \pi(s_2)$ for some $s_1,s_2\in S$, we have $s_1 - s_2 \in  I$. But $S$ contains only constant polynomials, while all elements of $I$ are either zero or nonconstant polynomials (because $I$ is generated by a non-constant polynomial). Hence the only possibility is that $s_1=s_2$.  We conclude that $\pi$ is a bijection between $S$ and $\pi(S)$.
-     
-     Now, by Swartz-Zippel lemma for (possibly infinite) integral domains (cf.\ \cref{l: SZ_for_integral_domains}), the number of elements $\rr'\in \pi(S)^\mu$ such that $g(\rr')=0$ is at most $|\pi(S)|^{\mu-1}= |S|^{\mu-1}$. On the other hand, if $\rr\in S^\mu$ is such that $f(X;\rr)\in I$, then $\pi(f(X;\rr))=g(\pi(\rr))=0$ \albert{technically the first equality should be justified}, and so $\pi(\rr)$ is an element from $\pi(S)^{\mu}$ such that $g(\pi(\rr))=0$. Since $\pi$ is a bijection, the result follows.
-    \end{proof}
+    Now, by Swartz-Zippel lemma for (possibly infinite) integral domains (cf.\ \cref{l: SZ_for_integral_domains}), the number of elements $\rr'\in \pi(S)^\mu$ such that $g(\rr')=0$ is at most $|\pi(S)|^{\mu-1}= |S|^{\mu-1}$. On the other hand, if $\rr\in S^\mu$ is such that $f(X;\rr)\in I$, then $\pi(f(X;\rr))=g(\pi(\rr))=0$ \albert{technically the first equality should be justified}, and so $\pi(\rr)$ is an element from $\pi(S)^{\mu}$ such that $g(\pi(\rr))=0$. Since $\pi$ is a bijection, the result follows.
+  \end{proof}
 
-     	\begin{algorithm}[H]
-		\caption{A 
-        reduction of knowledge from $\cR_{\gp, \cQ}$ to a strictly algebraic relation $\cR_{\gp, \cQ'}$. \label{a: red_to_strictly_algebraic}}
-		\textbf{Input:} $\Prover$, $\verifier$ receive inputs $(\idx, \inp; \wit)\in \REL_{\gp, \cQ}$. %Write $\inp=(\xx, \oracle{\tilde{\ww}}, \oracle{\tilde{\uu}})$, with $(\ww, \uu)\in \ZZ_B^{2n-k-1}$,  $\xx\in \ZZ_B^{k}$.
-		\begin{algorithmic}[1]
-            \STATE $\verifier$ samples $\rr\in S^\mu$ uniformly at random, for a fixed finite subset of $\QQ$. 
-            \STATE $\prover$ replies with an alement $a(X)\in \QQ[X]$ such that
-            %
-            $$
-            \sum_{\bb\in \{0,1\}^{\log|\cQ|}} Q_b(\vv_{\idx,\inp,\wit}(X))\cdot \eq(\bb; \rr) = a(X)
-            $$
-            \STATE 
-		\end{algorithmic}
-	\end{algorithm}
+    \begin{algorithm}[H]
+  \caption{A 
+      reduction of knowledge from $\cR_{\gp, \cQ}$ to a strictly algebraic relation $\cR_{\gp, \cQ'}$. \label{a: red_to_strictly_algebraic}}
+  \textbf{Input:} $\Prover$, $\verifier$ receive inputs $(\idx, \inp; \wit)\in \REL_{\gp, \cQ}$. %Write $\inp=(\xx, \oracle{\tilde{\ww}}, \oracle{\tilde{\uu}})$, with $(\ww, \uu)\in \ZZ_B^{2n-k-1}$,  $\xx\in \ZZ_B^{k}$.
+  \begin{algorithmic}[1]
+          \STATE $\verifier$ samples $\rr\in S^\mu$ uniformly at random, for a fixed finite subset of $\QQ$. 
+          \STATE $\prover$ replies with an alement $a(X)\in \QQ[X]$ such that
+          %
+          $$
+          \sum_{\bb\in \{0,1\}^{\log|\cQ|}} Q_b(\vv_{\idx,\inp,\wit}(X))\cdot \eq(\bb; \rr) = a(X)
+          $$
+          \STATE 
+  \end{algorithmic}
+\end{algorithm}
 
 
 
@@ -511,10 +566,10 @@ The SHA-256 compression function is applied to bitstrings of length $512$. At al
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Zip+: A polynomial commitment scheme for $(\QQ[X])[\vec Y]$}
+\section{\zipp: an efficient PCS for $(\QQ[X])^{\multilin}[\vec Y]$ from an IOPP to integer polynomials}
 \label{sec:zip+}
 
-\zipp is a Brakedown-like polynomial commitment scheme~\cite{C:GLSTW23} for multilinear polynomials with (degree and $\linfinity$ norm bounded) coefficients in the ring $\QQ[X]$. \zipp is based on an \emph{IOP of proximity (IOPP) to integer polynomials}. In a nutshell, \zipp is meant to be used to commit to polynomials with coefficients in $\ZZ_{B'_1,B'_2}[X]$, i.e., univariate integer polynomials of degree at most $B'_2$ with coefficient bit-length at most $B'_1$ (using the representation defined in~\cref{sec:bitstring-rep}). However, it only guarantees that the coefficients are in $\QQ_{B_1,B_2}[X]$, for certain $B_1>B'_1$ and $B_2>B'_2$. So, intuitively, \zipp allows to prove proximity to $B'_2$ degree univariate integer polynomials with $B'_1$ bit coefficients. This scenario is analogous to what one has with IOPPs to a linear code. Such a primitive guarantees that a prover knows a word that is close to being a codeword, but it is meant to be used by provers that actually know the codeword.
+\zipp is a Brakedown-like polynomial commitment scheme~\cite{C:GLSTW23} for multilinear polynomials with (degree and bit-length bounded) coefficients in the ring $\QQ[X]$. \zipp is based on an \emph{IOP of proximity (IOPP) to integer polynomials}. In a nutshell, \zipp is meant to be used to commit to polynomials with coefficients in $\ZZ_{B'_1,B'_2}[X]$, i.e., univariate integer polynomials of degree at most $B'_2$ with coefficient bit-length at most $B'_1$ (using the representation defined in~\cref{sec:bitstring-rep}). However, it only guarantees that the coefficients are in $\QQ_{B_1,B_2}[X]$, for certain $B_1>B'_1$ and $B_2>B'_2$. So, intuitively, \zipp allows to prove proximity to $B'_2$ degree univariate integer polynomials with $B'_1$ bit coefficients. This scenario is analogous to what one has with IOPPs to a linear code. Such a primitive guarantees that a prover knows a word that is close to being a codeword, but it is meant to be used by provers that actually know the codeword.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -524,7 +579,7 @@ The SHA-256 compression function is applied to bitstrings of length $512$. At al
 Before describing \zipp, we discuss linear codes over $\QQ$ with integral generator matrices, and recall the notion of a family of projectable linear codes from~\cite{EPRINT:GWHD25}. In short, this is a set of linear codes $\{\codelin\mid \lambda \geq 1\}$ over $\QQ$ with integral generator matrices $M_\lambda$, parameterized by the security parameter $\lambda$, such that, for each $\lambda$, there is a large number of primes $q$ such that $\phi_q(M_\lambda)$ has full rank and generates a code with minimal distance similar to the minimal distance of $\codelin$. Recall that $\phi_q:\local{q}\to \FF_q$ is the canonical projection of $\local{q}$ onto $\FF_q$, and $\phi_q(M_\lambda)$ is the result of applying $\phi_q$ to all components of $M_\lambda$. \zipp requires working with such codes, because part of its evaluation procedure is run modulo a random prime.
 
 Let $\codelinplain$ be a linear code over $\QQ$ of length $\codelength$ and dimension $\codedim$.  Let $M_{\codelinplain}$ be a generator matrix of $\codelinplain$. By $\Enc_{\codelinplain}: \QQ^\codedim \to \QQ^\codelength$ we denote the linear map assigning to each vector $\vv\in \QQ^\codedim$ an encoding in $\codelinplain$, which is obtained by multiplying $\vv$ with $M_{\codelinplain}$. If $M_{\codelinplain}$ contains only integer entries, i.e.\ if $M_{\codelinplain}\in \ZZ^{\codedim\times \codelength}$, we say that $\codelinplain$ is an \emph{integral linear code over $\QQ$.}
- 
+
 If $\codelinplain$ is such a code,  given any prime $q$, we define a new linear code $\codelinplain_q$ over $\FF_q$ of length $\codelength$ and of dimension $\codedim_q\leq \codedim$. Concretely, $\codelinplain_q$ is the $\FF_q$-vector space spanned by the rows of $\phi_q(M_\codelinplain)$, where $\phi_q: \local{q} \to \FF_q$ is the canonical projection of $\local{q}$ onto $\FF_q$. 
 
 As we mentioned, $\codedim_q\leq \codedim$. Moreover,  $\phi_q(M_\codelinplain)$ is a generator matrix of $\codelinplain_q$ if and only if $\codedim_q=\codedim$. Additionally,  the relative distance of $\codelinplain_q$, which we denote $\distance_q$, is at most the relative distance $\distance$ of $\codelinplain$. We call $\codelinplain_q$ the \emph{$q$-projection} of $\codelinplain$. Sometimes we denote the relative distance and dimension of a code $\cC$ by $\distance(\cC)$ and $\codedim(\cC)$.
@@ -536,42 +591,92 @@ We say that a prime $q\in \cP$ is \emph{good} with respect to $\cC$ and $\distan
 
 Often, $\cC, \cP, \distance_0$ and $\eps_\proj$ are parameterized by the security parameter $\lambda.$ In this case we write $\cC=\codelin$, and say that $\{\codelin\mid \lambda\}$ is a \emph{family  of $(\primeset,\distance_0)$-projectable codes}. For ease of notation, we omit writing $\lambda$ as subindex in other parameters and sets which may depend on $\lambda$ as well, such as $\distance_0$ and the dimension and lengths of the codes.
 \end{definition}
-    
-   
+  
 In~\cref{sec:ra-codes} we describe a projectable family of codes with small projection error, large distance parameter $\distance_0$, and with encoding matrices whose entries have bit-size at most $1$.
-
-    
-    
+  
 \begin{lemma}[{Projectable code commutativity~\cite[Definition 5.1]{EPRINT:GWHD25}}]
 \label{lemma:projectable-code-commutativity}
-
 Let $\codelinplain$ be a $(\cP, \distance_0)$-projectable linear code over $\QQ$. Let $\codelinplain_q$ denote the $q$-projection of $\codelinplain$. Then for $q \in \cP_{\good}$, $\phi_q(M_\codelinplain)$ is a generator matrix of $\codelinplain_q$. Denote by $\Enc_\codelinplain$ and $\Enc_{\codelinplain_q}$ the encoding maps for $\codelinplain$ and $\codelinplain_q$ consisting of multiplying a vector in $\QQ$ or in $\FF_q$ by the matrix $M_\codelinplain$ or $\phi_q(M_\codelinplain)$, respectively. Then, for all $\vv\in \ZZ_{(q)}^\codedim\subsetneq \QQ^\codedim$, 
 \[
 \Enc_{\codelinplain_q}(\phi_q(\vv)) = \phi_q(\Enc_{\codelinplain}(\vv)).
 \]
 \end{lemma}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A Brakedown-type PCS from an IOP of Proximity to Integer Polynomials}
+\label{sec:brakedown-over-q}
+
+In this section we describe \zipp. We start by fixing some notation and terminology.  
+
+\paragraph{Preliminary terminology and notation}
+Throughout the rest of \cref{sec:brakedown-over-q}  we let $\primeset$ be a set of primes each of bit-size at least $\lambda$, we fix a distance parameter $0<\distance_0<1$, and let $\{\codelin\mid \lambda \geq 1\}$ be a $(\primeset,\distance_0)$-projectable family of linear integer codes over $\QQ$ with error $\eps_{\proj}(\lambda)$, dimension $\codedim$, and block length $\codelength$  (which may depend on $\lambda$), such as the family described in~\cref{sec:ra-codes}. 
+
+\begin{definition}[Expanding family of homomorphisms]
+\label{def:expanding-family-of-homomorphisms}
+ Let $\cD$ be an integral domain and let $\KK$ be its field of fractions.     Let $\nummorph\geq 1$, let $\mathfrak{R}=\{\R_i\mid i\in [\nummorph]\}$ be a collection of subrings of $\KK$, and let $\Phi=\{\phi_i: \R_i \to \R_i' \mid i\in [\nummorph]\}$ be a collection of ring homomorphisms. Let $k\geq 1$ (one may think $k= \lambda$). We say that $(\mathfrak{R}, \Phi)$  is \emph{$k$-expanding} if the following two properties hold:
+\begin{enumerate}
+  \item  For any subset $I\subseteq [\nummorph]$, we have that all elements from
+  \[
+  \KK \setminus \bigcup_{i\in I} \R_i
+  \]
+  have length at least ${k\cdot |I|}$ with respect to some fixed binary encoding. 
+  %
+  \item For all $B,n\geq 1$ and polynomial $P\in \cD_B[Y_1,\ldots, Y_n]$, the following holds: assume $\yy\in \cD^{n}$ is such that
+  \[
+  P(\yy) \in  \bigcap_{i\in I} \ker \phi_i \setminus \{0\}
+  \]
+  for some nonempty subset $I\subseteq [\nummorph]$. Then $\yy$ contains an entry whose encoding is of length greater than
+  \[
+  \frac{k \cdot |I| - (B + \log(n_m(P)))}{\sum_{i\in[n]}\deg_{Y_i}(P)}
+  \]
+  where $n_m(P)$ denotes the number of nonzero coefficients of $P$, and $\deg_{Y_i}(P)$ denotes the degree of the variable $Y_i$ in $P$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[{\cite[Proposition 4.6]{EPRINT:GWHD25}}]
+\label{prop:bounded-rationals-and-localizations-are-expanding}
+Consider the ring of integers $\ZZ$, which is an integral domain, and its field of fractions $\QQ$, i.e., the field of rational numbers. Let $k\geq 1$ and let $\cP=\{q_1,\ldots, q_m\}$ be a set of $m$ different primes, each of bit-size at least $k$. Let $\phi_{q_i}\colon\local{q_i} \to \F_{q_i}$ be the canonical projections of the local rings $\local{q_i}\subsetneq \QQ$ onto the finite fields $\FF_{q_i}$ (\cref{sec:local-rings}). Then the pair $(\{\local{q_i}\mid i\in[m]\}, \{ \phi_{q_i} \mid i\in[m]\}$) is $k$-expanding.  
+\end{proposition}
+
+Thus, we have that the family of rings and morphisms $\{\local{q}\mid q\in \primeset\}$, $\{\phi_q: \local{q} \to \FF_q \mid q\in \primeset\}$ is $\lambda$-expanding.
+
+We will use symbols like $\vv$ or $\uu$ to denote matrices. In this case, $\vv_{i}$ denotes the $i$-th row of $\vv$, and $\vv_{i,j}$ denotes the $(i,j)$-th entry of $\vv$.  Recall that, for any rational number $v\in\QQ$, we denote its absolute value by $|v|$, and, given $\vv$ a vector, we denote by $\norm{\vv} = \max_{i}\{|\vv_i|\}$. Similarly, if $\vv$ is a matrix then $\norm{\vv}$ is the largest absolute value of one of the entries in $\vv$.
+
+Recall from (\cref{sec:bitstring-rep}) that we fix an encoding of $\QQ$ as strings of bits such that any $a/b$ in lowest form has an encoding with at most $2\max\{\log(|a|+1),\log(b+1)\}  +1$ bits. We often use instead the  approximate upper bound  $2(\log(|a|)+\log(b))$ for this bit-size.
+
+Let $\mu$ be an even number of variables, %\katy{just an even number might suffice since you say afterwards that $\mu$ is actually variables}ç
+$\XX=(X_1,\ldots, X_\mu)$, and $f\in \QQ^\multilin[\XX]$ be a multilinear polynomial on $\mu$ variables. Let   $\vv^f = (f(\xx))_{\xx\in \BB^{\mu}}$ be the vector of evaluations of $f$ on the hypercube $\BB^\mu$. Denote $\codedim=\sqrt{2^{\mu}}$. We see $\vv^f$ as a matrix from $\QQ^{\codedim \times \codedim}$, which we call the \emph{coefficient matrix of $f$}. We use the well-known fact \cite{Thaler23} that, for any $\qq\in \QQ^{\mu}$, there exists $\qq_1,\qq_2\in \QQ^{\codedim}$ such that
+\[
+      f(\qq) = \qq_1 \cdot \vv^f \cdot \qq_2^\T.
+\]
+Precisely, $\qq_1=(\widetilde{\mathsf{eq}}(\xx;\qq^{(1)}))_{\xx\in \BB^{\mu/2}}$ and $\qq_1=(\widetilde{\mathsf{eq}}(\xx;\qq^{(2)}))_{\xx\in \BB^{\mu/2}}$, where $\widetilde{\mathsf{eq}}$ is the equality multilinear polynomial (\cref{sec:multilinear-extensions}) on $\mu/2$ variables, $\qq^{(1)}=(\qq_1,\ldots, \qq_{\mu/2})$, and $\qq^{(2)}= (\qq_{\mu/2+1},\ldots, \qq_{\mu})$.
+%
+\begin{remark}[If $\qq$ is integral, then so are $\qq_1$ and $\qq_2$]\label{r: q_always_integers}
+It follows that if $\qq\in \ZZ^{\mu}$, then $\qq_1\in \ZZ^{\codedim}$ and $\qq_2\in \ZZ^{\codedim}$.
+\end{remark}
+
 \begin{figure}[H]
-	\begin{framed}
-		\begin{description}
-			\item[$\commit(\gp, f)$:] $f\in\polyspace$, $\vec Y\in\FF^{2\mu}$ 
-				\begin{itemize}
-					\item Compute matrix $V^f$ of size $\size\times\size$ and coefficients in $\QQ[X]$ that represents $f$ the following way:
-						$$\mathbf V^f=(f_{b_1, b_2}(X))_{b_1, b_2 \in \{0,1\}^\mu}\in \QQ[X]^{\size\times\size}$$
-					\item For each $i\in[\size]$, compute
-					 $\vectorUi=\encode(f_{i,b_2}(X))_{b_2\in\{0,1\}^\mu}\in\QQ[X]^n$ and matrix 
-					 $\matrixU=(\vectorUi)_{i\in [\size]}\in\QQ[X]^{\size\times n}$
-					\item Output $\com=(\oracleUi)_{i\in[\size]}$, where $\oracleUi$ denote oracles to $\vectorUi$
-				\end{itemize}
-			\item[$\open(\gp, \com, f, \matrixU)$:] \ \
-				\begin{itemize}
-					\item Parse $(\vectorUi)_{i\in[\size]}\gets\matrixU$ and $(\oracleUi)_{i\in[\size]}\gets\com$
-					\item Check that $\com$ consists of oracles to $\vectorUi$ and that $\vectorUi$ is $\delta$-close to $\encode_\code(\matrixV^f_i)$ for all $i$. \Aru{how}
-					\item Reject if at any moment reading $\hat{u}$, $f$, or $\com$ some coefficient is not in $\QQ[X]$ or is larger than $poly()$
-				\end{itemize}		
-		\item[$\evaluation$:] \
-		\item[$\testingP:$]
-				\begin{enumerate}
+\begin{framed}
+  \begin{description}
+    \item[$\commit(\gp, f)$:] $f\in\polyspace$, $\vec Y\in\FF^{2\mu}$ 
+      \begin{itemize}
+        \item Compute matrix $V^f$ of size $\size\times\size$ and coefficients in $\QQ[X]$ that represents $f$ the following way:
+          $$\mathbf V^f=(f_{b_1, b_2}(X))_{b_1, b_2 \in \{0,1\}^\mu}\in \QQ[X]^{\size\times\size}$$
+        \item For each $i\in[\size]$, compute
+          $\vectorUi=\encode(f_{i,b_2}(X))_{b_2\in\{0,1\}^\mu}\in\QQ[X]^n$ and matrix 
+          $\matrixU=(\vectorUi)_{i\in [\size]}\in\QQ[X]^{\size\times n}$
+        \item Output $\com=(\oracleUi)_{i\in[\size]}$, where $\oracleUi$ denote oracles to $\vectorUi$
+      \end{itemize}
+    \item[$\open(\gp, \com, f, \matrixU)$:] \ \
+      \begin{itemize}
+        \item Parse $(\vectorUi)_{i\in[\size]}\gets\matrixU$ and $(\oracleUi)_{i\in[\size]}\gets\com$
+        \item Check that $\com$ consists of oracles to $\vectorUi$ and that $\vectorUi$ is $\delta$-close to $\encode_\code(\matrixV^f_i)$ for all $i$. \Aru{how}
+        \item Reject if at any moment reading $\hat{u}$, $f$, or $\com$ some coefficient is not in $\QQ[X]$ or is larger than $poly()$
+      \end{itemize}		
+  \item[$\evaluation$:] \
+  \item[$\testingP:$]
+      \begin{enumerate}
 					\item $V$ sends $r_1, \ldots, r_{\size}\in[0, q_0-1]$ and $\mathbf \alpha=(\alpha_0, \ldots, \alpha_{Bdeg})\in[0, q_0-1]^{Bdeg}$
 					\item $P$ computes and outputs 
 					$$\mathbf{v}=\sum_{i\in[\size]}r_i\matrixV^f_i(\mathbf{\alpha})\in \QQ^{\size}$$
@@ -598,6 +703,12 @@ Let $\codelinplain$ be a $(\cP, \distance_0)$-projectable linear code over $\QQ$
 		\end{description}		
 	\end{framed}
 \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Repeat-accumulate (RA) codes over $\QQ[X]$}
+\label{section:ra-codes} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
