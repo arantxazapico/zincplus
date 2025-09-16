@@ -43,8 +43,8 @@
 
 \usepackage[backend=biber,giveninits,style=alphabetic,maxalphanames=6,maxnames=6,backref]{biblatex}
 \addbibresource{references.bib} 
-%\addbibresource{cryptobib/abbrev3.bib} 
-%\addbibresource{cryptobib/crypto_crossref.bib}
+\addbibresource{cryptobib/abbrev3.bib} 
+\addbibresource{cryptobib/crypto_crossref.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\plaintitle}{Zinc{+}}
@@ -104,10 +104,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\cR}{\mathcal{R}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+\label{sec:introduction}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Preliminaries}
+\label{sec:preliminaries}
 
         
 
@@ -119,7 +127,7 @@ highlighting the presence of the variable $X$, even though strictly speaking we 
 In general, we denote vectors of elements with lowercase boldface letters, e.g.\ $\vv,\uu,$ etc. Given a ring $\cD$ (typically $\ZZ, \QQ$, or $\local{q}$), we denote vectors of elements from $(\cD[X])[\YY]$ as $\vv(X;\YY), \uu(X;\YY)$, etc.
 
 
-For every ring $\cR$  we fix a publicly known representation of its elements as strings of bits. By $\cR_{\leq B}$ we denote the subset of $\cR$ formed by all elements whose bitstring representation contains at most $B$ bits. In \cref{s: bistring_reps} we describe the representation we use for the rings $\ZZ,\QQ, \ZZ[X],$ and $\QQ[X]$ \albert{And $\local{q},\local{q}[X]$?}.
+For every ring $\cR$  we fix a publicly known representation of its elements as strings of bits. By $\cR_{\leq B}$ we denote the subset of $\cR$ formed by all elements whose bitstring representation contains at most $B$ bits. In \cref{sec:bitstring-rep} we describe the representation we use for the rings $\ZZ,\QQ, \ZZ[X],$ and $\QQ[X]$ \albert{And $\local{q},\local{q}[X]$?}.
 
 In the special case of rings of the form $\cR[X]$, we write $$\cR_{\leq B, d}[X]$$ to denote the set of polynomials of degree strictly less than $d$ with coefficients in $\cR_{\leq B}$.
 
@@ -154,11 +162,20 @@ Let $\YY=(Y_1,\ldots, Y_\mu)$. We proceed by induction on $\mu$. If $\mu=1$ then
 \end{proof}
 
 
-\subsection{Bitstring representation of ring elements}\label{s: bistring_reps}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bitstring representation of ring elements}
+\label{sec:bitstring-rep}
+
 \albert{To do.}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Reductions of knowledge}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Algebraic constraints over $\QQ[X]$ modulo prime ideals}
 
 In this section we define the type of constraints we are interested in working on. As we argued in \cref{?}, and as we see later in \cref{s: example_sha}, these constraints are highly expressive, and can  express essentially all computations of interest with almost no arithmetization overhead.
@@ -242,7 +259,7 @@ Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
     \begin{remark}[The membership constraints are algebraic constraints]
     The membership constraints, namely $f_i(X,\yy) \in S_i$ for all $i\in [k]$, $\yy\in \{0,1\}^\mu$, can be written as algebraic constraints of the form $Q(\vv_{\idx,\inp,\wit}(X))=0$ for a certain collection of polynomials $Q$. See \cref{??} for a proof. 
     
-    Hence, the membership constraints could be removed from the definition of $\REL_{\gp, \megaQ, \cS}$,  without altering its expressiveness. Later, however, we will want to prove membership constraints with lookup-type techniques, while dealing with the algebraic constraints with other type of schemes such as Spartan \cite{spartan} inspired ones. This is the reason why membership constraints are specified in $\REL_{\gp,\megaQ, \cS}$ with their own separate syntax.
+    Hence, the membership constraints could be removed from the definition of $\REL_{\gp, \megaQ, \cS}$,  without altering its expressiveness. Later, however, we will want to prove membership constraints with lookup-type techniques, while dealing with the algebraic constraints with other type of schemes such as Spartan~\cite{C:Setty20} inspired ones. This is the reason why membership constraints are specified in $\REL_{\gp,\megaQ, \cS}$ with their own separate syntax.
     \end{remark}
 
     \begin{remark}
@@ -485,65 +502,102 @@ The SHA-256 compression function is applied to bitstrings of length $512$. At al
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \section{Zinc+ PIOP}
 
 
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Zip+: A polynomial commitment scheme for $(\QQ[X])[\vec Y]$}
-\input{sections/zip+}
-	
+\label{sec:zip+}
+
+\zipp is a Brakedown-like polynomial commitment scheme~\cite{C:GLSTW23} for multilinear polynomials with (degree and $\linfinity$ norm bounded) coefficients in the ring $\QQ[X]$. \zipp is based on an \emph{IOP of proximity (IOPP) to integer polynomials}. In a nutshell, \zipp is meant to be used to commit to polynomials with coefficients in $\ZZ_{B'_1,B'_2}[X]$, i.e., univariate integer polynomials of degree at most $B'_2$ with coefficient bit-length at most $B'_1$ (using the representation defined in~\cref{sec:bitstring-rep}). However, it only guarantees that the coefficients are in $\QQ_{B_1,B_2}[X]$, for certain $B_1>B'_1$ and $B_2>B'_2$. So, intuitively, \zipp allows to prove proximity to $B'_2$ degree univariate integer polynomials with $B'_1$ bit coefficients. This scenario is analogous to what one has with IOPPs to a linear code. Such a primitive guarantees that a prover knows a word that is close to being a codeword, but it is meant to be used by provers that actually know the codeword.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Projectable codes}
+\label{sec:projectable-codes}
 
-\subsection{Proximity gaps for infinite rings}
-\label{sec:proximity-gap}
+Before describing \zipp, we discuss linear codes over $\QQ$ with integral generator matrices, and recall the notion of a family of projectable linear codes from~\cite{EPRINT:GWHD25}. In short, this is a set of linear codes $\{\codelin\mid \lambda \geq 1\}$ over $\QQ$ with integral generator matrices $M_\lambda$, parameterized by the security parameter $\lambda$, such that, for each $\lambda$, there is a large number of primes $q$ such that $\phi_q(M_\lambda)$ has full rank and generates a code with minimal distance similar to the minimal distance of $\codelin$. Recall that $\phi_q:\local{q}\to \FF_q$ is the canonical projection of $\local{q}$ onto $\FF_q$, and $\phi_q(M_\lambda)$ is the result of applying $\phi_q$ to all components of $M_\lambda$. \zipp requires working with such codes, because part of its evaluation procedure is run modulo a random prime.
 
-\parhead{Informal proximity gap for proposed split encoding}
-Consider a projectable linear code $C$ over $\integers$ with a systematic generator matrix $G = [I_{\dim} \ G']$, and a good random choice of $q$. The honest prover will encode a message $m \in \integers^{\dim}$ as $m \| (G'm \bmod q) \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$.
+Let $\codelinplain$ be a linear code over $\QQ$ of length $\codelength$ and dimension $\codedim$.  Let $M_{\codelinplain}$ be a generator matrix of $\codelinplain$. By $\Enc_{\codelinplain}: \QQ^\codedim \to \QQ^\codelength$ we denote the linear map assigning to each vector $\vv\in \QQ^\codedim$ an encoding in $\codelinplain$, which is obtained by multiplying $\vv$ with $M_{\codelinplain}$. If $M_{\codelinplain}$ contains only integer entries, i.e.\ if $M_{\codelinplain}\in \ZZ^{\codedim\times \codelength}$, we say that $\codelinplain$ is an \emph{integral linear code over $\QQ$.}
+ 
+If $\codelinplain$ is such a code,  given any prime $q$, we define a new linear code $\codelinplain_q$ over $\FF_q$ of length $\codelength$ and of dimension $\codedim_q\leq \codedim$. Concretely, $\codelinplain_q$ is the $\FF_q$-vector space spanned by the rows of $\phi_q(M_\codelinplain)$, where $\phi_q: \local{q} \to \FF_q$ is the canonical projection of $\local{q}$ onto $\FF_q$. 
 
-Now consider an arbitrary set of vectors over $v_1,\dotsc,v_{m} \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$, and let $(u_1,\dotsc,u_m) \equiv (v_1,\dotsc,v_{m}) \bmod q$. We know from~\cite[Theorem 4.1]{BKS18} that if there exists $u^\ast \in \set{\sum_{i=1}^{m} \alpha_i u_i \mid \alpha_1,\dotsc,\alpha_m \in \integers_q}$ such that $\reldist{u^\ast}{C} > \delta$, then for any $\epsilon > 0$ such that $\delta-\epsilon < \lambda/3$ it holds that
+As we mentioned, $\codedim_q\leq \codedim$. Moreover,  $\phi_q(M_\codelinplain)$ is a generator matrix of $\codelinplain_q$ if and only if $\codedim_q=\codedim$. Additionally,  the relative distance of $\codelinplain_q$, which we denote $\distance_q$, is at most the relative distance $\distance$ of $\codelinplain$. We call $\codelinplain_q$ the \emph{$q$-projection} of $\codelinplain$. Sometimes we denote the relative distance and dimension of a code $\cC$ by $\distance(\cC)$ and $\codedim(\cC)$.
+
+\begin{definition}[Projectable family of linear codes]\label{d: projectable code}
+Let $0<\distance_0<1$, let $\cC$ be an integral linear code over $\QQ$, and let $\cP$ be a finite set of primes. We say that \emph{$\cC$ is projectable with respect to $(\cP, \distance_0)$}, or just \emph{$(\cP, \distance_0)$-projectable}, with error $\eps_\proj$ if there are at least $(1-\eps_\proj)\cdot |\cP|$ primes in $\cP$ such that $\codedim_q=\codedim$ and $\distance_q \geq \distance_0$, where $\codedim_q= \codedim(\codelinplain_q)$ and $\distance_q=\distance(\codelinplain_q)$.
+
+We say that a prime $q\in \cP$ is \emph{good} with respect to $\cC$ and $\distance_0$ if $\codedim_q=\codedim$ and $\distance_q \geq \distance_0$, and denote the set of such primes by $\cP_{\good}$. Otherwise we say $q$ is \emph{bad}.
+
+Often, $\cC, \cP, \distance_0$ and $\eps_\proj$ are parameterized by the security parameter $\lambda.$ In this case we write $\cC=\codelin$, and say that $\{\codelin\mid \lambda\}$ is a \emph{family  of $(\primeset,\distance_0)$-projectable codes}. For ease of notation, we omit writing $\lambda$ as subindex in other parameters and sets which may depend on $\lambda$ as well, such as $\distance_0$ and the dimension and lengths of the codes.
+\end{definition}
+    
+   
+In~\cref{sec:ra-codes} we describe a projectable family of codes with small projection error, large distance parameter $\distance_0$, and with encoding matrices whose entries have bit-size at most $1$.
+
+    
+    
+\begin{lemma}[{Projectable code commutativity~\cite[Definition 5.1]{EPRINT:GWHD25}}]
+\label{lemma:projectable-code-commutativity}
+
+Let $\codelinplain$ be a $(\cP, \distance_0)$-projectable linear code over $\QQ$. Let $\codelinplain_q$ denote the $q$-projection of $\codelinplain$. Then for $q \in \cP_{\good}$, $\phi_q(M_\codelinplain)$ is a generator matrix of $\codelinplain_q$. Denote by $\Enc_\codelinplain$ and $\Enc_{\codelinplain_q}$ the encoding maps for $\codelinplain$ and $\codelinplain_q$ consisting of multiplying a vector in $\QQ$ or in $\FF_q$ by the matrix $M_\codelinplain$ or $\phi_q(M_\codelinplain)$, respectively. Then, for all $\vv\in \ZZ_{(q)}^\codedim\subsetneq \QQ^\codedim$, 
 \[
-\Pr_{\alpha \gets \integers_{q}^m} \left[\reldist{\sum_{i=1}^{m} \alpha_i u_i}{C} < \delta - \epsilon\right] < \frac{1}{\epsilon q}
+\Enc_{\codelinplain_q}(\phi_q(\vv)) = \phi_q(\Enc_{\codelinplain}(\vv)).
 \]
-Since for any $\alpha$ we have $\reldist{\sum_{i=1}^{m} \alpha_i v_i}{C} \leq \reldist{\sum_{i=1}^{m} \alpha_i u_i}{C}$, this above result also holds for with respect to the $v_i$.
+\end{lemma}
 
-% We first recall the unique decoding version of the correlated agreement result for linear codes from~\cite{BKS18}.
-% \begin{lemma}[Correlated agreement over affine spaces~\cite{BKS18}]
-% \label{lemma:correlated-agreement}
-
-% Let $V \subseteq \field^\blocklength$ be a linear space over a finite field $\field$ with $\Delta(C) = \lambda$. Suppose $u^\ast \in \ring^b$ satisfies $\Delta(u^\ast,C) > \delta$, and fix arbitrary $u \in \ring^b$. Let $\challengeset \subseteq \ring$ be an exceptional set. For $\epsilon > 0$ satisfying $\delta - \epsilon < \lambda/3$. Let
-% \[
-% A = \{\alpha \in \mathcal{C} \mid \distance{u^\ast + \alpha u}{C} < \delta - \varepsilon\}
-% \]
-% If $|A| > 1/\varepsilon$ then there exist $v, v^\ast \in C$ such that
-% \[
-% \bigl|\set{i \in [n] \mid (u_i = v_i) \ \wedge \ (u^\ast_i = v^\ast_i)}\bigr| \geq (1 - \delta)\cdot n
-% \]
-% \parhead{Informal proximity gap for proposed split encoding}
-% Consider a projectable linear code $C$ over $\integers$ with a systematic generator matrix $G = [I_{\dim} \ G']$, and a good random choice of $q$. The honest prover will encode a message $m \in \integers^{\dim}$ as $m \| (G'm \bmod q) \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$.
-
-% Now consider an arbitrary set of vectors over $v_1,\dotsc,v_{m} \in \integers^{\dim} \times \integers_{q}^{\blocklength-\dim}$, and let $(u_1,\dotsc,u_m) \equiv (v_1,\dotsc,v_{m}) \bmod q$. We know from~\cite[Theorem 4.1]{BKS18} that if there exists $u^\ast \in \set{\sum_{i=1}^{m} \alpha_i u_i \mid \alpha_1,\dotsc,\alpha_m \in \integers_q}$ such that $\reldist{u^\ast}{C} > \delta$, then for any $\epsilon > 0$ such that $\delta-\epsilon < \lambda/3$ it holds that
-% \[
-% \Pr_{\alpha \gets \integers_{q}^m} \left[\reldist{\sum_{i=1}^{m} \alpha_i u_i}{C} < \delta - \epsilon\right] < \frac{1}{\epsilon q}
-% \]
-% Since for any $\alpha$ we have $\reldist{\sum_{i=1}^{m} \alpha_i v_i}{C} \leq \reldist{\sum_{i=1}^{m} \alpha_i u_i}{C}$, this above result also holds for with respect to the $v_i$.
-
-% We first recall the unique decoding version of the correlated agreement result for linear codes from~\cite{BKS18}.
-% \begin{lemma}[Correlated agreement over affine spaces~\cite{BKS18}]
-% \label{lemma:correlated-agreement}
-
-% Let $V \subseteq \field^\blocklength$ be a linear space over a finite field $\field$ with $\Delta(C) = \lambda$. Suppose $u^\ast \in \ring^b$ satisfies $\Delta(u^\ast,C) > \delta$, and fix arbitrary $u \in \ring^b$. Let $\challengeset \subseteq \ring$ be an exceptional set. For $\epsilon > 0$ satisfying $\delta - \epsilon < \lambda/3$. Let
-% \[
-% A = \{\alpha \in \mathcal{C} \mid \distance{u^\ast + \alpha u}{C} < \delta - \varepsilon\}
-% \]
-% If $|A| > 1/\varepsilon$ then there exist $v, v^\ast \in C$ such that
-% \[
-% \bigl|\set{i \in [n] \mid (u_i = v_i) \ \wedge \ (u^\ast_i = v^\ast_i)}\bigr| \geq (1 - \delta)\cdot n
-% \]
-% \end{lemma}
+\begin{figure}[H]
+	\begin{framed}
+		\begin{description}
+			\item[$\commit(\gp, f)$:] $f\in\polyspace$, $\vec Y\in\FF^{2\mu}$ 
+				\begin{itemize}
+					\item Compute matrix $V^f$ of size $\size\times\size$ and coefficients in $\QQ[X]$ that represents $f$ the following way:
+						$$\mathbf V^f=(f_{b_1, b_2}(X))_{b_1, b_2 \in \{0,1\}^\mu}\in \QQ[X]^{\size\times\size}$$
+					\item For each $i\in[\size]$, compute
+					 $\vectorUi=\encode(f_{i,b_2}(X))_{b_2\in\{0,1\}^\mu}\in\QQ[X]^n$ and matrix 
+					 $\matrixU=(\vectorUi)_{i\in [\size]}\in\QQ[X]^{\size\times n}$
+					\item Output $\com=(\oracleUi)_{i\in[\size]}$, where $\oracleUi$ denote oracles to $\vectorUi$
+				\end{itemize}
+			\item[$\open(\gp, \com, f, \matrixU)$:] \ \
+				\begin{itemize}
+					\item Parse $(\vectorUi)_{i\in[\size]}\gets\matrixU$ and $(\oracleUi)_{i\in[\size]}\gets\com$
+					\item Check that $\com$ consists of oracles to $\vectorUi$ and that $\vectorUi$ is $\delta$-close to $\encode_\code(\matrixV^f_i)$ for all $i$. \Aru{how}
+					\item Reject if at any moment reading $\hat{u}$, $f$, or $\com$ some coefficient is not in $\QQ[X]$ or is larger than $poly()$
+				\end{itemize}		
+		\item[$\evaluation$:] \
+		\item[$\testingP:$]
+				\begin{enumerate}
+					\item $V$ sends $r_1, \ldots, r_{\size}\in[0, q_0-1]$ and $\mathbf \alpha=(\alpha_0, \ldots, \alpha_{Bdeg})\in[0, q_0-1]^{Bdeg}$
+					\item $P$ computes and outputs 
+					$$\mathbf{v}=\sum_{i\in[\size]}r_i\matrixV^f_i(\mathbf{\alpha})\in \QQ^{\size}$$
+					\item $V$ randomly chooses $J\subset[n]$ with $|J|=\Theta(\delta)$ and for each $j\in J$
+						\begin{itemize}
+							\item If $\mathbf v_j$ is not an integer or $|\mathbf v_j|>...$, $V$ rejects
+							\item Queries $\hat{u}_{1,j}(X), \ldots, \hat{u}_{\size, j}(X)\in \QQ[X]$
+							\item Rejects if
+							\item Computes $(\hat{u}_{i,j}(\mathbf \alpha))_{i\in[\size]}$
+							\item $V$ checks whether $\encode(\mathbf v)_j=\sum_{i\in[\size]}r_i\hat{u}_{i,j}(\mathbf{\alpha})$
+						\end{itemize}
+				\end{enumerate}
+		\item[$\evaluationP:$]				
+				\begin{enumerate}
+					\item $V$ sends $r_1, \ldots, r_{\size}\in[0, q_0-1]$ and $\mathbf \alpha=(\alpha_0, \ldots, \alpha_{Bdeg})\in[0, q_0-1]^{Bdeg}$
+					\item $P$ computes and outputs 
+					$$\mathbf{v}=\sum_{i\in[\size]}\phi(q_{1,r})\phi(\matrixV^f_i)\in \FF_q^{\size}$$
+					\item $V$ randomly chooses $J\subset[n]$ with $|J|=\Theta(\delta)$ and for each $j\in J$
+					\begin{itemize}
+						\item If $\mathbf v_j$ is not an integer or $|\mathbf v_j|>...$, $V$ rejects
+						\item $V$ checks whether $\encode(\mathbf v_{q, x-\theta})_j=\sum_{i\in[\size]}\phi(q_{1,i})\phi_q(\hat{u}_{i,j}(X))$ and $\phi(y)=\sum_{i\in[\size]}(\mathbf v_{q, x-\theta})_i\phi(q_{2,i})$
+					\end{itemize}
+				\end{enumerate}
+		\end{description}		
+	\end{framed}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
