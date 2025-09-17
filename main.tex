@@ -238,15 +238,15 @@ In this section we define the type of constraints we are interested in working o
 \newcommand{\megaQ}{\mathfrak{Q}}
 \renewcommand{\ff}{\mathbf{f}}
 \newcommand{\cS}{\mathcal{S}}
-\newcommand{\gpunrolled}{(k, m, n, \mu, B, d)}
+\newcommand{\gpunrolled}{(k, m, n, \mu, B, d, t)}
 
-Let $\gp = \gpunrolled$ be global parameters, where $k,m,n,B,d$ are size parameters whose meaning will become apparent soon. Recall that $\mainQpolyring$ denotes the set of polynomials from $\QQ[X]$ of degree less than $d$ and with coefficients whose bit representation has less than $B$ bits (for some fixed representation of the elements from $\QQ$ as strings of bits).
+Let $\gp = \gpunrolled$ be global parameters, where $k,m,n,B,d,t$ are size parameters whose meaning will become apparent soon. Recall that $\mainQpolyring$ denotes the set of polynomials from $\QQ[X]$ of degree less than $d$ and with coefficients whose bit representation has less than $B$ bits (for some fixed representation of the elements from $\QQ$ as strings of bits). \psiv{Maybe use $<$ rather than $\leq$ to emphasize strictly less than/ agree with notation like $\bits^{<32}$ used below}
 
-Let $I_1,\ldots, I_t$ be a tuple of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_i$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_i|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
+Let $\primeideal_1,\ldots, \primeideal_t$ be a tuple of prime ideals of $\QQ[X]$. For each $i \in [t]$, let $\cQ_i$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_i|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
 Denote 
 %
 $$
-\megaQ = \{(\cQ_1, I_1), \ldots, (\cQ_t, I_t)\}.
+\megaQ = \{(\cQ_1, \primeideal_1), \ldots, (\cQ_t, \primeideal_t)\}.
 $$
 %
 Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
@@ -260,10 +260,10 @@ An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \megaQ,\cS}$ o
     with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
 \item \textbf{Witness} The \emph{witness} $\wit$ is consists of $k$ multilinear polynomials $f_{1}(X;\YY),\ldots, f_{k}(X;\YY))$ from $\mainQpolyring^{\multilin}[\YY]$. %We denote these vectors by $\ff_1(X;\YY), \ldots, \ff_r(X;\YY)$ and their entries as $\ff_{i}(X;\YY)=(f_{i1}(X;\YY),\ldots, f_{ik}(X;\YY))$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
 \item \textbf{Public instance.} The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
-\item \textbf{Algebraic constraints modulo prime idelas.} For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $I_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
+\item \textbf{Algebraic constraints modulo prime idelas.} For each  $i\in [t]$  and $Q\in \cQ_t$, we have that $Q$ belongs to $\primeideal_i$  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
   i.e.
   $$
-  Q(\vv_{\idx, \inp,\wit}(X)) \in I_t.
+  Q(\vv_{\idx, \inp,\wit}(X)) \in \primeideal_t.
   $$
   \item \textbf{Membership constraints.} For each $i\in [k]$ be have that $f_i(X;\yy) \in S_i$ for all $\yy\in \{0,1\}^\mu$.
   %\item For each  polynomial $Q \in \cQ$, we have that $Q$ vanishes  when evaluated on the values $$\vv_{\idx, \inp,\wit}(X)=(\yy(X), (g_1(X;\yy),\ldots, g_n(X;\yy), f_1(X,\yy),\ldots, f_k(X;\yy))_{\yy\in \BB^\mu}),$$
@@ -290,7 +290,7 @@ An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \megaQ,\cS}$ o
   &\quad \inp =(\yy(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY)}),\\ &\quad \yy(X)\in \mainQpolyring^{m},\\    
       &\quad \wit = (f_1(X;\YY), \ldots, f_k(X;\YY)) \in \left(\mainQpolyringmultilin[\YY]\right)^{k},\\
       &\textbf{Algebraic constraints mod ideal}\\
-      &\quad Q(\vv_{\idx, \inp,\wit}(X)) \in I_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
+      &\quad Q(\vv_{\idx, \inp,\wit}(X)) \in \primeideal_i  \text{ for all } i\in [t], \ Q\in \cQ_i,\\
       &\quad \vv_{\idx, \inp,\wit}(X) = \left(\begin{aligned}&\yy(X),\\ &\left(\begin{aligned}&g_1(X;\yy),\ldots, g_n(X;\yy),\\ &f_1(X,\yy),\ldots, f_k(X;\yy)\end{aligned}\right)_{\yy\in \BB^\mu}\\
     \end{aligned}\right),\\
     &\textbf{Membership constraints}\\
@@ -310,7 +310,7 @@ An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \megaQ,\cS}$ o
       \albert{Emphasize that membership constraints are proved via a lookup ran over a random prime field $\FF$ and that the SOS decomposed witness only needs to be committed over $\FF$}
   \end{remark}
 
-  \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, I)$ and $I$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit}(X))\in I_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit}(X))=0, \quad  \text{ for all }Q\in \cQ.$$
+  \begin{definition}[Strictly algebraic relation $\REL_{\gp, \megaQ}$]\label{d: strictly_algebraic} We say that  $\megaQ$ is \emph{strictly algebraic} if $\megaQ$ contains only one pair $(\cQ, \primeideal)$ and $\primeideal$ is the zero ideal.  In that case,  the constraints $$Q(\vv_{\idx, \inp,\wit}(X))\in \primeideal_i, \quad \text{ for all } i\in [t],\ Q\in \cQ_i$$ from $\REL_{\gp,\megaQ}$ become $$Q(\vv_{\idx, \inp,\wit}(X))=0, \quad  \text{ for all }Q\in \cQ.$$
   \end{definition}
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -400,7 +400,7 @@ $$
 % 
 We now have all we need to put together a relation of the form $\REL_{\gp, \megaQ, \cS}$ which encodes the computation $f^{2^{20}-1}(u_0)$.
 
-We set $\gp=(k=6,m=1,n=0,\mu=20, B)$ \albert{what $B$?}. The $k=6$ witness polynomials are $$\wit=(f_{\uu}(X;\YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY),  f_{\phi(\uu')}(X;\YY), \mu(X;\YY), \eta(X;\YY)),$$ where $\mu(X;\YY), \eta(X;\YY)$ satisfy $\mu(X;i)=\mu_i(X)$ and $\eta(X;i)=\eta_i(X)$ for each $i\in \{0,1\}^{20}$. Then we set $\cS=(S_1, \ldots, S_6)$ with
+We set $\gp=(k=6,m=1,n=0,\mu=20, B=?, d=32, t=4)$ \albert{what $B$?}. The $k=6$ witness polynomials are $$\wit=(f_{\uu}(X;\YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY),  f_{\phi(\uu')}(X;\YY), \mu(X;\YY), \eta(X;\YY)),$$ where $\mu(X;\YY), \eta(X;\YY)$ satisfy $\mu(X;i)=\mu_i(X)$ and $\eta(X;i)=\eta_i(X)$ for each $i\in \{0,1\}^{20}$. Then we set $\cS=(S_1, \ldots, S_6)$ with
 %
 $$S_1 = S_2 = [0,2^{32}-1],\ S_3=S_4= \{0,1\}^{< 32}[X],\ S_5=S_6=\mainQpolyringmultilin.$$
 %
@@ -413,15 +413,16 @@ Denote
 $$
 \vv_{\inp,\wit}(X)=(w_1, f_{\uu}(X;\yy), f_{\uu'}(X;\yy), f_{\phi(\uu)}(X;\yy), f_{\phi(\uu')}(X;\yy), \mu(X;\yy), \eta(X;\yy))_{\yy\in \{0,1\}^{20}}.
 $$
-Finally, we select the tuple $\megaQ$ as follows. We let $\megaQ=\{(\cQ_1, I_1), (\cQ_2, I_2), (\cQ_3, I_3), (\cQ_4, I_4), (\cQ_5, I_5)\}$,
+Finally, we select the tuple $\megaQ$ as follows. We let $\megaQ=\{(\cQ_1, \primeideal_1), (\cQ_2, \primeideal_2), (\cQ_3, \primeideal_3), (\cQ_4, \primeideal_4), (\cQ_5, I_5)\}$,
 where for all $i\in [2^{20}-1]$ (recall we identify $\{0,1\}^{20}$ and $[2^{20}]$)
 %
 \begin{align*}
-  &I_1 = \{0\}, &&\cQ_1=(Q_{1i})_{i\in [2^{20}-1]},\\
-  &I_2 = \{0\}, &&\cQ_2=(Q_{2i})_{i\in [2^{20}-1]},\\
-  &I_3 =(X-2), &&\cQ_3=(Q_{3i})_{i\in [2^{20}]},\\
-    &I_4 =(X-2), &&\cQ_4=(Q_{4i})_{i\in [2^{20}-1]},
+  &\primeideal_1 = \{0\}, &&\cQ_1=(Q_{1i})_{i\in [2^{20}-1]},\\
+  &\primeideal_2 = \{0\}, &&\cQ_2=(Q_{2i})_{i\in [2^{20}-1]},\\
+  &\primeideal_3 =(X-2), &&\cQ_3=(Q_{3i})_{i\in [2^{20}]},\\
+    &\primeideal_4 =(X-2), &&\cQ_4=(Q_{4i})_{i\in [2^{20}-1]},
 \end{align*}
+\psiv{Earlier we said $|Q_i|$ is a power-of-two.}
 with
 \begin{align*}
   Q_{1i}(\vv_{\inp,\wit}(X))&=f_{\uu'}(X; i) - f_{\uu}(X;i)\cdot f_{\uu}(X;i) - 2^{32} \mu_i(X),&& \text{for all } i\in [2^{20}],\\
@@ -429,7 +430,7 @@ with
   Q_{3i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu)}(X;i)-f_{\uu}(X;i), && \text{for all } i\in [2^{20}],\\
   Q_{4i}(\vv_{\inp,\wit}(X))&=f_{\phi(\uu')}(X;i)-f_{\uu'}(X;i), && \text{for all } i\in [2^{20}-1].
 \end{align*}
-We also want to make sure that $f_{\uu}(X; 1)= u_1$. We add this extra constraints as a new tuple  $(\cQ_5, I_5)$ where $I_5=\{0\}$ and $\cQ_5=\{Q_5\}$ with $Q_5(\vv_{\inp,\wit})= f_{\uu}(X;1)-u_1$.
+While as noted we require no constraints on $\mu,\nu$ other than the ``native'' ones, the ideals $(2^{20}) = (2) = \QQ[X]$ are not prime, so we must set $\primeideal_1 = \primeideal_2 = \set{0}$. We also want to make sure that $f_{\uu}(X; 1)= u_1$. We add this extra constraints as a new tuple  $(\cQ_5, \primeideal_5)$ where $\primeideal_5=\{0\}$ and $\cQ_5=\{Q_5\}$ with $Q_5(\vv_{\inp,\wit})= f_{\uu}(X;1)-u_1$.
 
 Finally, we saw that all our witness polynomials, when evaluated on $\{0,1\}^{20}$, either belong to the range $[0, 2^{32}-1]$, or to the set $\{0,1\}^{< 32}[X]$. Hence we set $B$ as:
 %
@@ -510,6 +511,7 @@ The SHA-256 compression function is applied to bitstrings of length $512$. At al
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{SHA-256 hashing + RSA signature verification}
+\psiv{Does anyone use RSA signatures?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Lattice-based operations}
@@ -520,20 +522,20 @@ The SHA-256 compression function is applied to bitstrings of length $512$. At al
 \subsection{Reduction to strictly algebraic relations}
 \label{sec:reduction-to-algebraic-relations}
 
-In this section we provide a reduction of knowledge from  any relation of the form $\REL_{\gp, \megaQ}$ to a strictly algebraic relation $\REL_{\gp, \megaQ'}$ (cf.\ \cref{d: strictly_algebraic}), i.e.\ a relation where  $\megaQ'$ consists of just one pair $(Q', I)$ and $I$ is the zero  ideal. 
+In this section we provide a reduction of knowledge from  any relation of the form $\REL_{\gp, \megaQ}$ to a strictly algebraic relation $\REL_{\gp, \megaQ'}$ (cf.\ \cref{d: strictly_algebraic}), i.e.\ a relation where  $\megaQ'$ consists of just one pair $(Q', \primeideal)$ and $\primeideal$ is the zero  ideal. 
 
 
   \begin{lemma}
-  Let $f(X;\YY) \in (\QQ[X])^{\multilin}[\YY]$ be a multilinear polynomial on variables $\YY= (Y_1,\ldots, Y_\mu)$ and coefficients in $\QQ[X]$. Let $i(X) \in \QQ[X]$ be a non-constant irreducible polynomial, and let $I$ be the ideal of $\QQ[X]$ generated by $I$. 
+  Let $f(X;\YY) \in (\QQ[X])^{\multilin}[\YY]$ be a multilinear polynomial on variables $\YY= (Y_1,\ldots, Y_\mu)$ and coefficients in $\QQ[X]$. Let $i(X) \in \QQ[X]$ be a non-constant irreducible polynomial, and let $\primeideal$ be the ideal of $\QQ[X]$ generated by $i$. 
   
-  Assume $f(X;\yy)\not\in I$ for some $\yy\in \QQ^\mu$. Let $S$ be a finite subset of $\QQ$. Then the number of elements $\rr\in S^\mu$ such that $f(X;\rr)\in I$ is a most $|S|^{\mu-1}$.
+  Assume $f(X;\yy)\not\in \primeideal$ for some $\yy\in \QQ^\mu$. Let $S$ be a finite subset of $\QQ$. Then the number of elements $\rr\in S^\mu$ such that $f(X;\rr)\in \primeideal$ is a most $|S|^{\mu-1}$.
   \end{lemma}
   \begin{proof}
-  Let $\dom= \QQ[X]/I$ and let  $\pi:\QQ[X] \to D$ be the natural projection of $\QQ[X]$ onto $\dom$. The ring $\dom$ is an integral domain by \cref{r: domain_prime}, and so $\dom$ is a subring of a field $\KK$. Let $\pi:(\QQ[X])[\YY]\to D[\YY]$ be the natural extension of $\pi$ for polynomials (cf.\ \cref{??}). Let $g(\YY) = \pi(f(X;\YY))$, i.e.\ $g(\YY)$ is the result of applying $\pi$ to the coefficients of $f$ (with respect to any basis, like the monomial basis). 
+  Let $\dom= \QQ[X]/\primeideal$ and let  $\pi:\QQ[X] \to D$ be the natural projection of $\QQ[X]$ onto $\dom$. The ring $\dom$ is an integral domain by \cref{r: domain_prime}, and so $\dom$ is a subring of a field $\KK$. Let $\pi:(\QQ[X])[\YY]\to D[\YY]$ be the natural extension of $\pi$ for polynomials (cf.\ \cref{??}). Let $g(\YY) = \pi(f(X;\YY))$, i.e.\ $g(\YY)$ is the result of applying $\pi$ to the coefficients of $f$ (with respect to any basis, like the monomial basis). 
   
-    If the polynomial $g(\YY) \in D[\YY]$ was the zero polynomial, then we would have $g(\yy) = 0$, which means that $\pi(f(X;\yy))\in I$, contradicting our assumptions. Hence $g(\YY)$ is not the zero polynomial. Moreover, $|\pi(S)|=|S|$, because whenever $\pi(s_1) = \pi(s_2)$ for some $s_1,s_2\in S$, we have $s_1 - s_2 \in  I$. But $S$ contains only constant polynomials, while all elements of $I$ are either zero or nonconstant polynomials (because $I$ is generated by a non-constant polynomial). Hence the only possibility is that $s_1=s_2$.  We conclude that $\pi$ is a bijection between $S$ and $\pi(S)$.
+    If the polynomial $g(\YY) \in D[\YY]$ was the zero polynomial, then we would have $g(\yy) = 0$, which means that $\pi(f(X;\yy))\in \primeideal$, contradicting our assumptions. Hence $g(\YY)$ is not the zero polynomial. Moreover, $|\pi(S)|=|S|$, because whenever $\pi(s_1) = \pi(s_2)$ for some $s_1,s_2\in S$, we have $s_1 - s_2 \in  \primeideal$. But $S$ contains only constant polynomials, while all elements of $\primeideal$ are either zero or nonconstant polynomials (because all prime ideals of $\QQ[X]$ are generated by non-constant polynomials). Hence, the only possibility is that $s_1=s_2$.  We conclude that $\pi$ is a bijection between $S$ and $\pi(S)$.
     
-    Now, by Swartz-Zippel lemma for (possibly infinite) integral domains (cf.\ \cref{l: SZ_for_integral_domains}), the number of elements $\rr'\in \pi(S)^\mu$ such that $g(\rr')=0$ is at most $|\pi(S)|^{\mu-1}= |S|^{\mu-1}$. On the other hand, if $\rr\in S^\mu$ is such that $f(X;\rr)\in I$, then $\pi(f(X;\rr))=g(\pi(\rr))=0$ \albert{technically the first equality should be justified}, and so $\pi(\rr)$ is an element from $\pi(S)^{\mu}$ such that $g(\pi(\rr))=0$. Since $\pi$ is a bijection, the result follows.
+    Now, by Swartz-Zippel lemma for (possibly infinite) integral domains (cf.\ \cref{l: SZ_for_integral_domains}), the number of elements $\rr'\in \pi(S)^\mu$ such that $g(\rr')=0$ is at most $|\pi(S)|^{\mu-1}= |S|^{\mu-1}$. \psiv{Shouldn't we have that $g$ is multilinear since $f$ is and therefore there are at most $2^{\mu} |S|^{\mu-1}$ roots in $\pi(S)^\mu$? Not all prime ideals of $\QQ[X]$ are of degree one or, equivalently, $g$ will not always be a constant polynomial}. On the other hand, if $\rr\in S^\mu$ is such that $f(X;\rr)\in \primeideal$, then $\pi(f(X;\rr))=g(\pi(\rr))=0$ \albert{technically the first equality should be justified}, and so $\pi(\rr)$ is an element from $\pi(S)^{\mu}$ such that $g(\pi(\rr))=0$. Since $\pi$ is a bijection, the result follows.
   \end{proof}
 
     \begin{algorithm}[H]
