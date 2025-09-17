@@ -242,7 +242,7 @@ In this section we define the type of constraints we are interested in working o
 
 Let $\gp = \gpunrolled$ be global parameters, where $k,m,n,B,d$ are size parameters whose meaning will become apparent soon. Recall that $\mainQpolyring$ denotes the set of polynomials from $\QQ[X]$ of degree less than $d$ and with coefficients whose bit representation has less than $B$ bits (for some fixed representation of the elements from $\QQ$ as strings of bits).
 
-Let $I_1,\ldots, I_t$ be a tuple of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_t$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_t|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
+Let $I_1,\ldots, I_t$ be a tuple of prime ideals of $\QQ[X]$. For each $i\in [t]$, let $\cQ_i$ be a set  of \emph{constraint polynomials} with coefficients in $\QQ[X]$ (possibly multivariate and of arbitrary degree), with $|\cQ_i|$ a power of two.  The polynomials in $\cQ_i$ will be used to place constraints on instances and witnesses.
 Denote 
 %
 $$
@@ -253,10 +253,10 @@ Let $\cS=\{S_1, \ldots, S_k\}$ be a collection of finite subsets of $\QQ[X]$.
 %Let $\evalconstraints$ be a set of triples $(i, j, a)$ where $i,j\in [k]$ and $a \in \QQ$. 
 %
 
-An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \cQ,\cS}$ of triples $(\idx, \inp;\wit)$ with the following properties:
+An algebraic relation for $(\gp,\megaQ,\cS)$ is a set $\REL_{\gp, \megaQ,\cS}$ of triples $(\idx, \inp;\wit)$ with the following properties:
 \begin{itemize}
 \item \textbf{Index.} The \emph{index} $\idx$ contains $n$ oracles \albert{maybe $n$ should be the size of the witness, it's more standard} $\oracle{g_1(X;\YY)}, \ldots, \oracle{g_n(X;\YY)}$ to multilinear polynomials from $\mainQpolyring^\multilin[\YY]$, where $\YY=(Y_1,\ldots, Y_\mu) $ is a tuple of variables. 
-  \item \textbf{Constraint polynomials.} For each $i\in [t]$, $\cQ_t$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
+  \item \textbf{Constraint polynomials.} For each $i\in [t]$, $\cQ_i$ is a set of polynomials %$$\cQ_t=\{Q_{t,\bb}\}_{\bb\in \{0,1\}^{\log|\cQ_t|}}$$
     with coefficients in $\QQ[X]$, each on $(n+ k)\cdot 2^\mu + m$ variables.
 \item \textbf{Witness} The \emph{witness} $\wit$ is consists of $k$ multilinear polynomials $f_{1}(X;\YY),\ldots, f_{k}(X;\YY))$ from $\mainQpolyring^{\multilin}[\YY]$. %We denote these vectors by $\ff_1(X;\YY), \ldots, \ff_r(X;\YY)$ and their entries as $\ff_{i}(X;\YY)=(f_{i1}(X;\YY),\ldots, f_{ik}(X;\YY))$. %and the multilinear polynomials $g_1,\ldots, g_n\in \R_B^\multilin[\XX]$.
 \item \textbf{Public instance.} The public instance $\inp=(\zz(X), \oracle{f_1(X;\YY)}, \ldots, \oracle{f_k(X;\YY))})$, where $\zz\in \mainQpolyring^m$.
@@ -357,8 +357,7 @@ above, the elements $v_i$ all belong to $\{0,1\}$ and $v= \sum_{i=1}^{32} v_i\cd
     \phi(\uu') &= (\phi(u_1'),\ldots, \phi(u_{2^{20}-1}'),0) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}.%\\
     %\hat{\ww} &= (0,\hat{w_2}, \ldots, \hat{w_{2^{20}}}) &&\in (\{0,1\}^{< 32}[X])^{2^{20}}
 \end{align*}
-The $0$'s at the end of $\uu', \phi(\uu')$ can be chosen arbitrarily: our computation never accesses these entries of the vectors, and so these entries are not be subject to any constraint whatsoever.
-
+The $0$'s at the end of $\uu', \phi(\uu')$ can be chosen arbitrarily: our computation never accesses these entries of the vectors, and so these entries are not be subject to any constraint whatsoever. \psiv{I think the point you're trying to make is just that the $0$s could be any value?}
 
 We introduce $4$ multilinear polynomials on $20$ variables $\YY=(Y_1,\ldots, Y_{20})$, with coefficients in $\QQ[X]$. We denote them by $f_{\uu}(X; \YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY), f_{\phi(\uu')}(X;\YY)$. These polynomials will be the witness of the index-instance-witness triple we will build. Intuitively, $f_{\uu}(X; \YY), f_{\uu'}(X;\YY), f_{\phi(\uu)}(X;\YY), f_{\phi(\uu')}(X;\YY)$ are supposed to be the multilinear extensions of the vectors $\uu, \uu', \phi(\uu)$, and $\phi(\uu')$, respectively. 
 
@@ -439,7 +438,7 @@ B=\text{maximum bit size of an element from } [0,2^{32}-1] \cup \{0,1\}^{< 32}[X
 $$
 for our fixed bitstring representation of elements from $\QQ[X]$.
 
-Putting everything together, we obtain the following relation for the computation $f^{2^{20}-1}(w_0)$ (again, recall we identify the sets $\{0,1\}^{20}$ and $[2^20]$):
+Putting everything together, we obtain the following relation for the computation $f^{2^{20}-1}(w_0)$ (again, recall we identify the sets $\{0,1\}^{20}$ and $[2^{20}]$):
   \begin{equation*}
   \begin{aligned}
   &\REL_{\gparams,\megaQ,\cS} =\\ &\left\{ \left(\begin{aligned}&\idx,\\ &\inp;\\ &\wit\end{aligned}\right) \left| \ \begin{aligned}
